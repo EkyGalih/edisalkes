@@ -47,7 +47,7 @@ class Karyawan(models.Model):
     email = models.CharField('Email', max_length=191)
     jabatan = models.CharField('Jabatan', max_length=191)
     alamat = models.TextField('Alamat')
-    
+
     def __str__(self):
         return self.nama
 
@@ -170,7 +170,7 @@ class MasterStatus(models.Model):
 
     def __str__(self):
         return self.nama_status
-    
+
     class Meta:
         verbose_name_plural = 'Master Status'
 
@@ -179,12 +179,13 @@ class Beban(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     jenis_biaya = models.CharField('Jenis Biaya', max_length=255)
     unit_price = models.CharField('Unit Price', max_length=255)
-    
+
     def __str__(self):
         return self.jenis_biaya
-    
+
     class Meta:
         verbose_name_plural = 'Master Beban'
+
 
 class Sales(models.Model):
 

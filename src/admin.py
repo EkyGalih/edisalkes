@@ -18,7 +18,7 @@ admin.site.register(Beban)
 @admin.register(Stok)
 class StokAdmin(admin.ModelAdmin):
     # list_display = ('kode_pulau','nama_pulau','status')
-    list_display = ("nama_barang","harga_jual", "harga_beli","stok","size")
+    list_display = ("nama_barang","harga_jual", "harga_beli","stok","size","tgl_terima_stok")
     list_filter = ()
     list_per_page = 20
     search_fields = ('nama_barang','stok')
