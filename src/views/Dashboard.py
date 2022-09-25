@@ -9,7 +9,7 @@ def dashboard(request):
     jumlah_beli = Purchases.objects.filter(created_at__gte=datetime.now()-timedelta(days=7)).count()
     jumlah_beli2 = Purchases.objects.values('total_amount','created_at').annotate(total=Count('total_amount', filter=Q(created_at__gte=datetime.now()-timedelta(days=7))),beli=Sum('total_amount', filter=Q(created_at__gte=datetime.now()-timedelta(days=7))))
     jumlah_jual = Sales.objects.values('total_amount','created_at').annotate(jual=Sum('total_amount', filter=Q(created_at__gte=datetime.now()-timedelta(days=7))))
-    ten_sale =  Sales.objects.values('total_amount','vendor_name__nama_pelanggan','created_at').annotate(jual=Sum('total_amount', filter=Q(created_at__gte=datetime.now()-timedelta(days=7))))[:10]
+    ten_sale =  Sales.objects.values('total_amount','vendor_name__nama_lembaga','created_at').annotate(jual=Sum('total_amount', filter=Q(created_at__gte=datetime.now()-timedelta(days=7))))[:10]
     transaksi_beli = Purchases.objects.count()
     ten_ps =  Purchases.objects.values('total_amount','vendor_name__nama_vendor','created_at').annotate(jual=Sum('total_amount', filter=Q(created_at__gte=datetime.now()-timedelta(days=7))))[:10]
     sisa_stok = Stok.objects.values('stok').annotate(jumlah=Sum('stok'))
