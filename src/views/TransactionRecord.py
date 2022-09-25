@@ -181,7 +181,7 @@ def deleteItemPurchase(request, pk):
 @login_required
 def sales(request):
     frm = SalesForm
-    frm_pel = PelangganForm
+    frm_pel = LembagaForm
     sale_list = Sales.objects.filter(created_by=request.user)
     status_pel = 0
     if "q" in request.GET and request.GET["q"] != "":
@@ -210,7 +210,7 @@ def sales(request):
             else:
                 print("form tidak valid")
         else:
-            frm_pel = PelangganForm(request.POST)
+            frm_pel = LembagaForm(request.POST)
             if frm_pel.is_valid():
                 frm_pel.save()
                 messages.add_message(request, messages.INFO, mark_safe('pelanggan added.'))
@@ -228,7 +228,7 @@ def salesDetail(request,pk):
     frm = SalesFormEdit(instance=tr_obj)
     frm2 = SalesDetailForm
     kar = Karyawan.objects.all()
-    pel = Pelanggan.objects.all()
+    pel = Lembaga.objects.all()
     if request.POST:
         # print(request.POST["receiver_name"])
         print("berhasil masuk post")

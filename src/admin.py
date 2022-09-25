@@ -13,6 +13,7 @@ admin.site.register(Karyawan)
 admin.site.register(Vendor)
 admin.site.register(Lembaga)
 admin.site.register(MasterPersen)
+admin.site.register(Beban)
 
 @admin.register(Stok)
 class StokAdmin(admin.ModelAdmin):
