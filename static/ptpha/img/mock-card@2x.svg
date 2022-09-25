@@ -1,0 +1,42 @@
+<svg width="298" height="305" viewBox="0 0 298 305" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_2_233)">
+<path d="M32 28C32 23.5817 35.5817 20 40 20H258C262.418 20 266 23.5817 266 28V226H32V28Z" fill="white"/>
+<rect x="56" y="44" width="72" height="20" rx="10" fill="#F4F5F7"/>
+<rect x="56" y="74" width="186" height="8" rx="4" fill="#F4F5F7"/>
+<rect x="56" y="92" width="186" height="8" rx="4" fill="#F4F5F7"/>
+<rect x="56" y="110" width="120" height="8" rx="4" fill="#F4F5F7"/>
+<line x1="56" y1="141.5" x2="242" y2="141.5" stroke="#F4F5F7"/>
+<g clip-path="url(#clip0_2_233)">
+<g clip-path="url(#clip1_2_233)">
+<rect x="56" y="168" width="88" height="8" rx="4" fill="#F4F5F7"/>
+<rect x="170" y="166" width="72" height="12" rx="6" fill="#F4F5F7"/>
+</g>
+<g clip-path="url(#clip2_2_233)">
+<rect x="56" y="192" width="88" height="8" rx="4" fill="#F4F5F7"/>
+<rect x="170" y="190" width="72" height="12" rx="6" fill="#F4F5F7"/>
+</g>
+</g>
+<path d="M32 226H266V253C266 257.418 262.418 261 258 261H40C35.5817 261 32 257.418 32 253V226Z" fill="#474A57"/>
+<rect x="48" y="238" width="158" height="11" rx="5.5" fill="#D9DBE1"/>
+</g>
+<defs>
+<filter id="filter0_d_2_233" x="-3" y="0" width="304" height="311" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="12"/>
+<feGaussianBlur stdDeviation="16"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.109804 0 0 0 0 0.172549 0 0 0 0 0.25098 0 0 0 0.2 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_233"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_233" result="shape"/>
+</filter>
+<clipPath id="clip0_2_233">
+<rect width="186" height="36" fill="white" transform="translate(56 166)"/>
+</clipPath>
+<clipPath id="clip1_2_233">
+<rect width="186" height="12" fill="white" transform="translate(56 166)"/>
+</clipPath>
+<clipPath id="clip2_2_233">
+<rect width="186" height="12" fill="white" transform="translate(56 190)"/>
+</clipPath>
+</defs>
+</svg>

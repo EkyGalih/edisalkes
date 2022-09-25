@@ -1,0 +1,37 @@
+from django.urls import path
+from .views import Auth,Dashboard,TransactionRecord as TR
+from .views import Kas as KS
+from .views import Landing as LN
+
+app_name = 'core'
+urlpatterns = [
+    # path('user/', Login.as_view(), name='users'),
+    path('',LN.landing, name='landing'),
+    path('dashboard/',Dashboard.dashboard, name='dashboard'),
+    path('staff/login/', Auth.signin, name='login'),
+    path('staf/logout/',Auth.signout, name="logout"),
+    path('pembelian/',TR.purhases, name="purchases"),
+    path('pembelian/detail/<str:pk>',TR.purchaseDetail, name="purchases_detail"),
+    path('pembelian/detail/item/<str:pk>',TR.edititempurchase, name="purchase_item_edit"),
+    path('pembelian/detail/item/template/<str:pk>',TR.edittemplateitemps, name="purchase_item_edit_template"),
+    path('pembelian/delete/<str:pk>',TR.deletePurchase, name="delete_purchase"),
+    path('pembelian/detail/delete/<str:pk>',TR.deleteItemPurchase, name="ps_delete_item"),
+    path('penjualan/',TR.sales, name="sales"),
+    path('penjualan/detail/<str:pk>',TR.salesDetail, name="sales_detail"),
+    path('penjualan/detail/item/<str:pk>',TR.edititemsale, name="sale_item_edit"),
+    path('penjualan/detail/item/template/<str:pk>',TR.edittemplateitem, name="sale_item_edit_template"),
+    path('penjualan/delete/<str:pk>',TR.deleteSale, name="delete_sale"),
+    path('penjualan/detail/delete/<str:pk>',TR.deleteItemSale, name="delete_item"),
+
+    path('kas/kecil',KS.kaskecil, name="kaskecil"),
+    path('kas/kecil/detail/<str:pk>',KS.kaskecilDetail, name="kaskecil_detail"),
+    path('kas/kecil/detail/item/<str:pk>',KS.edititemkaskecil, name="kaskecil_item_edit"),
+    path('kas/kecil/detail/item/template/<str:pk>',KS.edittemplateitemkk, name="kaskecil_item_edit_template"),
+    path('kas/kecil/delete/<str:pk>',KS.deleteKasKecil, name="delete_kaskecil"),
+    path('kas/kecil/detail/delete/<str:pk>',KS.deleteItemKasKecil, name="kk_delete_item"),
+
+    path('kas/besar',KS.kasbesar, name="kasbesar"),
+    path('kas/besar/delete/<str:pk>',KS.deleteKasBesar, name="delete_kasbesar"),
+    path('kas/besar/<str:pk>',KS.editkasbesar, name="kasbesar_edit"),
+    path('kas/besar/template/<str:pk>',KS.edittemplatekb, name="kasbesar_edit_template"),
+]

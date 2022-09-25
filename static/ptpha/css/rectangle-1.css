@@ -1,0 +1,10 @@
+/* screen - rectangle-1 */
+
+.rectangle-1 {
+  background-color: var(--amaranth-2);
+  height: 291px;
+  mix-blend-mode: normal;
+  overflow-x: hidden;
+  position: relative;
+  width: 1728px;
+}

@@ -1,0 +1,15 @@
+
+<input name="product_code" hidden value="{{trs.product_code}}" placeholder="Kode Produk" id="id_product_code_modal" class="swal2-input">
+<!-- <input name="product_name" value="{{trs.product_name}}" id="id_product_name_modal" class="swal2-input"> -->
+<select id="id_product_name_modal" class="swal2-input">
+    {% for st in stok %}
+    {% if st.pk == trs.product_name.pk %}
+    <option data-price="{{st.harga_beli}}" value="{{st.pk}}" selected> {{st}}</option>
+    {% else %}
+    <option data-price="{{st.harga_beli}}" value="{{st.pk}}"> {{st}}</option>
+    {% endif %}
+    {% endfor %}
+</select>
+<input name="quantity" value="{{trs.quantity}}" placeholder="Quantity" id="id_quantity_modal" class="swal2-input">
+<input name="size" hidden value="{{trs.size}}" placeholder="Ukuran/Size" id="id_size_modal" class="swal2-input">
+<input name="unit_price" value="{{trs.unit_price}}" readonly placeholder="Harga Produk" id="id_unit_price_modal" class="swal2-input">
