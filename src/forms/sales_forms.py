@@ -24,7 +24,7 @@ class SalesFormEdit(forms.ModelForm):
 
     class Meta:
         model = Sales
-        fields = ('transaction_date','vendor_name','dp','receiver_name','discount')
+        fields = ('transaction_date','vendor_name','dp','receiver_name','discount', 'surat_pesanan_instansi')
 
     def __init__(self, *args, **kwargs):
         super(SalesFormEdit, self).__init__(*args, **kwargs)
@@ -35,6 +35,7 @@ class SalesFormEdit(forms.ModelForm):
         self.fields['vendor_name'].widget.attrs['class'] = "form-control"
         self.fields['dp'].widget.attrs['class'] = "form-control"
         self.fields['receiver_name'].widget.attrs['class'] = "form-control"
+        self.fields['surat_pesanan_instansi'].widget.attrs['class'] = "form-control"
 
 class SalesFormEdit2(forms.ModelForm):
 

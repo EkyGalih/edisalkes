@@ -208,6 +208,7 @@ class Sales(models.Model):
     status = models.ForeignKey(MasterStatus, on_delete=models.SET_NULL,
                                related_name="has_status", blank=True, null=True)
     pic = models.CharField(max_length=255)
+    surat_pesanan_instansi = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(blank=True, null=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, db_column='created_by',
