@@ -113,6 +113,7 @@ class Purchases(models.Model):
     total = models.FloatField()
     tax_persen = models.FloatField(blank=True, null=True)
     tax = models.FloatField()
+    no_purchase_order = models.CharField(max_length=100)
     total_amount = models.FloatField()
     ongkos_kirim = models.FloatField(blank=True, null=True)  # field tambahan
     nomor_surat_jalan = models.CharField(

@@ -76,6 +76,15 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-7 col-lg-6">
+        <div class="card">
+            <div class="card-body">
+    
+                <label class="form-label">No Purchase Order</label>
+                <input type="text" class="form-control" id="id_no_purchase_order" value="{{trs.no_purchase_order}}" name="no_purchase_order">
+            </div>
+        </div>
+    </div>
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
@@ -96,7 +105,7 @@
             </div>
         </div>
     </div>
-    <div class="col-6">
+    <div class="col-4">
         <div class="card">
             <div class="card-body">
     
@@ -110,7 +119,7 @@
         </div>
     </div>
 
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-body">
                 <label class="form-label">Nomor Surat Jalan</label>
@@ -119,7 +128,7 @@
         </div>
     </div>
 
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-body">
                 <label class="form-label">Ongkos Kirim</label>
@@ -234,8 +243,8 @@
                         <td style="width: 60%;">DP 30%</td>
                         <td>
                             
+                            <input type="text" class="form-control form-control-flush" value="{{trs.total_amount|multiply:0.30}}" id="id_dp" name="dp" placeholder="Text..">
                             {{trs.total_amount|multiply:0.30|format_rupiah}}
-                            <input type="hidden" class="form-control form-control-flush" value="{{trs.total_amount|multiply:0.30}}" readonly id="id_dp" name="dp" placeholder="Text..">
                         </td>
                         {% comment %} <td>
                             <div class="input-icon mb-3">
