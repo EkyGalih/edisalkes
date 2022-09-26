@@ -13,7 +13,7 @@ class LembagaForm(forms.ModelForm):
         self.fields["nama_lembaga"].required = True
         # self.fields["transaction_date"].required = True
         # self.fields["vendor_name"].required = True
-        self.fields['nama_pelanggan'].widget.attrs['class'] = "form-control"
+        self.fields['nama_lembaga'].widget.attrs['class'] = "form-control"
         self.fields['hp'].widget.attrs['class'] = "form-control"
         self.fields['email'].widget.attrs['class'] = "form-control"
         self.fields['alamat'].widget.attrs['class'] = "form-control"
