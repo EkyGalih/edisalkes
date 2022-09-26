@@ -204,7 +204,7 @@ def sales(request):
                 messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
                 return redirect(reverse('core:sales_detail', kwargs={'pk':addfrm.pk}))
                 # except:
-                #     # print(frm)
+                #     print(frm)
                 #     messages.add_message(request, messages.WARNING, mark_safe('Gagal disimpan.'))
                 #     return redirect(reverse('core:sales'))
             else:

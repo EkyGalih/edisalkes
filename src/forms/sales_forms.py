@@ -8,14 +8,17 @@ class SalesForm(forms.ModelForm):
 
     class Meta:
         model = Sales
-        fields = ('transaction_date','vendor_name')
+        fields = ('transaction_date','vendor_name', 'pic')
 
     def __init__(self, *args, **kwargs):
         super(SalesForm, self).__init__(*args, **kwargs)
         self.fields["transaction_date"].required = True
         self.fields["vendor_name"].required = True
+        self.fields["pic"].required = True
         self.fields['transaction_date'].widget.attrs['class'] = "form-control"
         self.fields['vendor_name'].widget.attrs['class'] = "form-control"
+        self.fields['pic'].widget.attrs['class'] = "form-control"
+        
 
 class SalesFormEdit(forms.ModelForm):
 
