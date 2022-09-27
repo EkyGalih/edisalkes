@@ -36,7 +36,7 @@ class SalesFormEdit(forms.ModelForm):
         self.fields['dp'].widget.attrs['class'] = "form-control"
         self.fields['receiver_name'].widget.attrs['class'] = "form-control"
         self.fields['surat_pesanan_instansi'].widget.attrs['class'] = "form-control"
-
+        
 class SalesFormEdit2(forms.ModelForm):
 
     class Meta:
