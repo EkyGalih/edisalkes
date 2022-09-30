@@ -118,7 +118,7 @@ class Purchases(models.Model):
     ongkos_kirim = models.FloatField(blank=True, null=True)  # field tambahan
     nomor_surat_jalan = models.CharField(
         max_length=100, blank=True, null=True)  # field tambahan
-    dp = models.FloatField(blank=True, null=True)
+    dp = models.FloatField(null=False)
     sisa_pembayaran = models.FloatField()
     receiver_name = models.ForeignKey(Karyawan, on_delete=models.SET_NULL, blank=True,
                                       null=True, db_column="karyawan_id", related_name="has_karyawan_ps")

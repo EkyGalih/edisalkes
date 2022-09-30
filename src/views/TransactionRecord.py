@@ -57,13 +57,13 @@ def purchaseDetail(request,pk):
     kar = Karyawan.objects.all()
     vend = Vendor.objects.all()
     if request.POST:
-        print(request.POST)
+        # print(request.POST)
         # print(request.POST["receiver_name"])
-        print("berhasil masuk post")
+        # print("berhasil masuk post")
         frm = PurchaseFormEdit(request.POST,instance=tr_obj)
         frm2 = PurchaseDetailForm(request.POST)
         if frm.is_valid():
-            print("oke berubah")
+            # print("oke berubah")
             frmadd = frm.save(commit=False)
             if frm2.is_valid():
                 frm2add = frm2.save(commit=False)
@@ -76,6 +76,7 @@ def purchaseDetail(request,pk):
                 if frmadd.ongkos_kirim:
                     ongkos_kirim = float(frmadd.ongkos_kirim)
                 frmadd.total_amount = float(frmadd.total) + ongkos_kirim + frmadd.tax
+                
                 frm2add.save()
                 frmadd.save()
                 messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))

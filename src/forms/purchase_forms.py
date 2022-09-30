@@ -35,6 +35,7 @@ class PurchaseFormEdit(forms.ModelForm):
         self.fields["vendor_name"].required = True
         self.fields["receiver_name"].required = True
         self.fields["no_purchase_order"].required = True
+        self.fields["dp"].required = True
         self.fields['invoice_no'].widget.attrs['class'] = "form-control"
         self.fields['transaction_date'].widget.attrs['class'] = "form-control"
         self.fields['vendor_name'].widget.attrs['class'] = "form-control"

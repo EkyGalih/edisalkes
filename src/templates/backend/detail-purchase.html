@@ -240,11 +240,10 @@
                         </td>
                         </tr>
                         <tr>
-                        <td style="width: 60%;">DP 30%</td>
+                        <td style="width: 60%;">DP (%)</td>
                         <td>
-                            
-                            <input type="text" class="form-control form-control-flush" value="{{trs.total_amount|multiply:0.30}}" id="id_dp" name="dp" placeholder="Text..">
-                            {{trs.total_amount|multiply:0.30|format_rupiah}}
+                            <span class="input-icon-addon"></span> <input type="text" class="form-control form-control-flush" value="{% if frm.dp_persen.value %}{{ frm.dp_persen.value }}{% else %}{% endif %}" id="id_dp" name="dp_persen" placeholder="Masukkan Julmah DP">
+                            {{trs.dp|multiply:0.30|format_rupiah}}
                         </td>
                         {% comment %} <td>
                             <div class="input-icon mb-3">
@@ -356,6 +355,9 @@
             if($('#id_tax_persen').val() == ''){
                 Swal.fire('Harap mengisi form tax!', '', 'warning');
                 $('#id_tax_persen').focus();
+            }else if($('#id_dp').val() == ''){
+                Swal.fire('Harap mengisi form DP!', '', 'warning');
+                $('#id_dp').focus();
             }else{
                 alert("apakah anda yakin?");
                 $('#formPurchase').submit();
