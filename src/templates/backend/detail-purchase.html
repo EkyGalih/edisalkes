@@ -166,8 +166,10 @@
                             <td>{{item.product_name.nama_barang}}</td>
                             <td>{{item.product_name.size}}</td>
                             <td>{{item.quantity}}</td>
-                            <td>{{item.unit_price|stringformat:".0f"}}</td>
-                            <td>{{item.amount|stringformat:".0f"}}</td>
+                            {% comment %} <td>{{item.unit_price|stringformat:".0f"}}</td> {% endcomment %}
+                            <td>{{item.unit_price|format_rupiah}}</td>
+                            {% comment %} <td>{{item.amount|stringformat:".0f"}}</td> {% endcomment %}
+                            <td>{{item.amount|format_rupiah}}</td>
                             <td>{{item.status}}</td>
                             <td>
                                 <a href="#" id="btnEdit" 
@@ -242,8 +244,8 @@
                         <tr>
                         <td style="width: 60%;">DP (%)</td>
                         <td>
-                            <span class="input-icon-addon"></span> <input type="text" class="form-control form-control-flush" value="{% if frm.dp_persen.value %}{{ frm.dp_persen.value }}{% else %}{% endif %}" id="id_dp" name="dp_persen" placeholder="Masukkan Julmah DP">
-                            {{trs.dp|multiply:0.30|format_rupiah}}
+                            <span class="input-icon-addon"></span> <input type="text" class="form-control form-control-flush" value="{% if frm.dp.value %}{{ frm.dp.value }}{% else %}{% endif %}" id="id_dp" name="dp" placeholder="Masukkan Julmah DP">
+                            {{trs.dp|floatformat:0|format_rupiah}}
                         </td>
                         {% comment %} <td>
                             <div class="input-icon mb-3">
@@ -355,9 +357,6 @@
             if($('#id_tax_persen').val() == ''){
                 Swal.fire('Harap mengisi form tax!', '', 'warning');
                 $('#id_tax_persen').focus();
-            }else if($('#id_dp').val() == ''){
-                Swal.fire('Harap mengisi form DP!', '', 'warning');
-                $('#id_dp').focus();
             }else{
                 alert("apakah anda yakin?");
                 $('#formPurchase').submit();
@@ -398,6 +397,9 @@
             if($('#id_tax_persen').val() == ''){
                 Swal.fire('Harap mengisi form tax!', '', 'warning');
                 $('#id_tax_persen').focus();
+            } else if($('#id_dp').val() == '') {
+                Swal.fire('Harap mengisi form DP!', '', 'warning');
+                $('#id_dp').focus();
             }else{
                 alert("apakah anda yakin?");$form1 = $('#formPurchase');
                 $form1.submit();

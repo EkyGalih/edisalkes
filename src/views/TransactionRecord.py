@@ -93,7 +93,6 @@ def purchaseDetail(request,pk):
             frmadd.save()
             messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
             return redirect(reverse('core:purchases'))
-        # print(frm)
         print(frm.errors)
         print(frm2.errors)
         messages.add_message(request, messages.INFO, mark_safe('Harap melengkapi form karyawan penerima'))
