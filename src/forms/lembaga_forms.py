@@ -17,3 +17,14 @@ class LembagaForm(forms.ModelForm):
         self.fields['hp'].widget.attrs['class'] = "form-control"
         self.fields['email'].widget.attrs['class'] = "form-control"
         self.fields['alamat'].widget.attrs['class'] = "form-control"
+        
+class PicForm(forms.ModelForm):
+
+    class Meta:
+        model = Lembaga
+        fields = ('pic',)
+
+    def __init__(self, *args, **kwargs):
+        super(PicForm, self).__init__(*args, **kwargs)
+        self.fields["pic"].required = True
+        self.fields['pic'].widget.attrs['class'] = "form-control"

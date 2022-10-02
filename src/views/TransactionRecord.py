@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from src.forms import SalesForm, VendorForm, LembagaForm
+from src.forms.lembaga_forms import PicForm
 from src.forms.purchase_forms import PurchaseDetailForm, PurchaseForm, PurchaseFormEdit
 from src.forms.sales_forms import SalesFormEdit, SalesDetailForm, SalesFormEdit2
 from src.models import Sales, SaleDetail, Stok, Karyawan, Vendor, Lembaga, MasterPersen
@@ -184,6 +185,7 @@ def sales(request):
     frm_pel = LembagaForm
     sale_list = Sales.objects.filter(created_by=request.user)
     status_pel = 0
+    pic = PicForm
     if "q" in request.GET and request.GET["q"] != "":
         sale_list = Sales.objects.filter(created_by=request.user, invoice_no=request.GET['q'])
     if request.POST:
@@ -215,7 +217,7 @@ def sales(request):
                 frm_pel.save()
                 messages.add_message(request, messages.INFO, mark_safe('pelanggan added.'))
                 status_pel=1
-    context = {"frm":frm,"sls":sale_list,"frm_pel":frm_pel,"status_pel":status_pel}
+    context = {"frm":frm,"sls":sale_list,"frm_pel":frm_pel,"status_pel":status_pel,"pic":pic}
     return render(request,'backend/sales.html',context)
 
 @login_required

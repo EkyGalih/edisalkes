@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from src.models import User
@@ -30,8 +31,7 @@ class Lembaga(models.Model):
     hp = models.CharField('Nomor HP', max_length=21)
     email = models.CharField('Email', max_length=191)
     alamat = models.TextField('Alamat')
-    nama_pic = models.CharField('Nama PIC', max_length=255)
-    hp_pic = models.CharField('Nomor HP PIC', max_length=21)
+    pic = models.CharField('Pic', max_length=255, default="")
 
     def __str__(self):
         return self.nama_lembaga
@@ -61,8 +61,7 @@ class Vendor(models.Model):
     hp = models.CharField('Nomor HP', max_length=21)
     email = models.CharField('Email', max_length=191)
     alamat = models.TextField('Alamat')
-    nama_pic = models.CharField('Nama PIC', max_length=255)
-    hp_pic = models.CharField('Nomor HP PIC', max_length=21)
+    pic = models.CharField('Pic', max_length=255, default="")
 
     def __str__(self):
         return self.nama_vendor
@@ -113,7 +112,7 @@ class Purchases(models.Model):
     total = models.FloatField()
     tax_persen = models.FloatField(blank=True, null=True)
     tax = models.FloatField()
-    no_purchase_order = models.CharField(max_length=100)
+    no_purchase_order = models.CharField(max_length=100, default="")
     total_amount = models.FloatField()
     ongkos_kirim = models.FloatField(blank=True, null=True)  # field tambahan
     nomor_surat_jalan = models.CharField(
@@ -195,6 +194,8 @@ class Sales(models.Model):
     transaction_date = models.DateTimeField()
     vendor_name = models.ForeignKey(Lembaga, on_delete=models.SET_NULL, blank=True,
                                     null=True, db_column="lembaga_id", related_name="has_lembaga")
+    pic = models.ForeignKey(Lembaga, on_delete=models.SET_NULL, blank=True,
+                                    null=True, db_column="pic_id", related_name="has_pic")
     # pelanggan = models.ForeignKey(Pelanggan, on_delete=models.SET_NULL, blank=True, null=True, db_column="pelanggan_id", related_name="has_pelanggan")
     total = models.FloatField()
     tax = models.FloatField()
@@ -207,8 +208,7 @@ class Sales(models.Model):
                                       null=True, db_column="karyawan_id", related_name="has_karyawan_ss")
     status = models.ForeignKey(MasterStatus, on_delete=models.SET_NULL,
                                related_name="has_status", blank=True, null=True)
-    pic = models.CharField(max_length=255)
-    surat_pesanan_instansi = models.CharField(max_length=100)
+    surat_pesanan_instansi = models.CharField(max_length=100, default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(blank=True, null=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, db_column='created_by',
