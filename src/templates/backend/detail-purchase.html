@@ -245,7 +245,7 @@
                         <tr>
                         <td style="width: 60%;">DP (%)</td>
                         <td>
-                            <span class="input-icon-addon"></span> <input type="text" class="form-control form-control-flush" value="{% if frm.dp.value %}{{ frm.dp.value }}{% else %}{% endif %}" id="id_dp" name="dp" placeholder="Masukkan Julmah DP">
+                            <span class="input-icon-addon"></span> <input type="text" class="form-control form-control-flush" value="{% if frm.dp_persen.value %}{{ frm.dp_persen.value }}{% else %}{% endif %}" id="id_dp_persen" name="dp_persen" placeholder="Masukkan Julmah DP">
                             {{trs.dp|floatformat:0|format_rupiah}}
                         </td>
                         {% comment %} <td>
@@ -359,14 +359,8 @@
                 Swal.fire('Harap mengisi form tax!', '', 'warning');
                 $('#id_tax_persen').focus();
             }else{
-                alert("apakah anda yakin?");
                 $('#formPurchase').submit();
-                {% if messages %}
-
-                {% for message in messages %}
                 Swal.fire('Tersimpan!', '', '{{ message }}');
-                {% endfor %}
-                {% endif %}
             }
         });
 
@@ -398,18 +392,18 @@
             if($('#id_tax_persen').val() == ''){
                 Swal.fire('Harap mengisi form tax!', '', 'warning');
                 $('#id_tax_persen').focus();
-            } else if($('#id_dp').val() == '') {
+            } else if($('#id_dp_persen').val() == '') {
                 Swal.fire('Harap mengisi form DP!', '', 'warning');
-                $('#id_dp').focus();
+                $('#id_dp_persen').focus();
             }else{
-                alert("apakah anda yakin?");$form1 = $('#formPurchase');
+                $form1 = $('#formPurchase');
                 $form1.submit();
                 $('#save_purchase').removeAttr("onclick","callme()");
                 $('#id_invoice_no').attr("readonly","readonly");
                 $('#id_transaction_date').attr("readonly","readonly");
                 $('#id_vendor_name').attr("readonly","readonly");
                 $('#id_receiver_name').attr("readonly","readonly");
-                $('#id_dp').attr("readonly","readonly");
+                $('#id_dp_persen').attr("readonly","readonly");
                 $('#save_purchase').attr("class","btn btn-grey d-none d-sm-inline-block");
                 $('#edit_purchase').attr("class","btn btn-primary d-none d-sm-inline-block");
             }

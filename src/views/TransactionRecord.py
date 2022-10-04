@@ -77,7 +77,6 @@ def purchaseDetail(request,pk):
                 if frmadd.ongkos_kirim:
                     ongkos_kirim = float(frmadd.ongkos_kirim)
                 frmadd.total_amount = float(frmadd.total) + ongkos_kirim + frmadd.tax
-                
                 frm2add.save()
                 frmadd.save()
                 messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
@@ -85,7 +84,9 @@ def purchaseDetail(request,pk):
             
             nilai_total = float(frmadd.total) 
             nilai_persen = (float(frmadd.tax_persen)/100)
+            dp_persen = (float(frmadd.dp)/100)
             frmadd.tax = (nilai_persen * nilai_total)
+            frmadd.dp = (dp_persen * nilai_total)
             ongkos_kirim = 0
             if frmadd.ongkos_kirim:
                 ongkos_kirim = float(frmadd.ongkos_kirim)
@@ -165,6 +166,7 @@ def deleteItemPurchase(request, pk):
         try:
             purchase.total -= amount_item_f
             purchase.tax = (float(purchase.tax_persen)/100) * purchase.total
+            purchase.dp = (float(purchase.dp_persen)/100) * purchase.total
             ongkos_kirim = 0
             if purchase.ongkos_kirim:
                 ongkos_kirim = float(purchase.ongkos_kirim)

@@ -118,6 +118,7 @@ class Purchases(models.Model):
     nomor_surat_jalan = models.CharField(
         max_length=100, blank=True, null=True)  # field tambahan
     dp = models.FloatField(default=0, null=True, blank=True)
+    dp_persen = models.FloatField(blank=True, null=True)
     sisa_pembayaran = models.FloatField()
     receiver_name = models.ForeignKey(Karyawan, on_delete=models.SET_NULL, blank=True,
                                       null=True, db_column="karyawan_id", related_name="has_karyawan_ps")
@@ -134,7 +135,10 @@ class Purchases(models.Model):
         # self.sisa_pembayaran = (self.total_amount - self.dp)
         if (self.tax_persen == None):
             self.tax_persen = 0
+        if (self.dp_persen == None):
+            self.dp_persen = 0
         self.tax = (float(self.tax_persen)/100 * float(self.total))
+        self.dp = (float(self.dp_persen)/100 * float(self.total))
         self.sisa_pembayaran = (float(self.total_amount) - float(self.dp))
         super(Purchases, self).save(*args, **kwargs)
 

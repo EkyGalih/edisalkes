@@ -25,7 +25,7 @@ class PurchaseFormEdit(forms.ModelForm):
 
     class Meta:
         model = Purchases
-        fields = ('invoice_no', 'transaction_date', 'vendor_name', 'dp',
+        fields = ('invoice_no', 'transaction_date', 'vendor_name', 'dp_persen',
                   'receiver_name', 'ongkos_kirim', 'nomor_surat_jalan', 'tax_persen', 'no_purchase_order')
 
     def __init__(self, *args, **kwargs):
@@ -38,7 +38,7 @@ class PurchaseFormEdit(forms.ModelForm):
         self.fields['invoice_no'].widget.attrs['class'] = "form-control"
         self.fields['transaction_date'].widget.attrs['class'] = "form-control"
         self.fields['vendor_name'].widget.attrs['class'] = "form-control"
-        self.fields['dp'].widget.attrs['class'] = "form-control"
+        self.fields['dp_persen'].widget.attrs['class'] = "form-control"
         self.fields['receiver_name'].widget.attrs['class'] = "form-control"
         self.fields['ongkos_kirim'].widget.attrs['class'] = "form-control"
         self.fields['nomor_surat_jalan'].widget.attrs['class'] = "form-control"
