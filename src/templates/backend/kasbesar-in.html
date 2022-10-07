@@ -77,26 +77,26 @@
             </tr>
           </thead>
           <tbody>
-            {% for kb in kasbesarMasuk %}
+            {% for kbm in kasbesarMasuk %}
             <tr>
               <td>
                 {{forloop.counter}}
               </td>
-              <td>{{kb.tgl_pencatatan}}</td>
-              <td><span class="text-purple">#{{kb.no_transaksi}}</span></td>
-              <td>{{kb.pengirim}}</td>
-              <td>{{kb.bank_pengirim}}</td>
-              <td>Rp. {{kb.nominal}}</td>
+              <td>{{kbm.tgl_pencatatan}}</td>
+              <td><span class="text-purple">#{{kbm.no_transaksi}}</span></td>
+              <td>{{kbm.pengirim}}</td>
+              <td>{{kbm.bank_pengirim}}</td>
+              <td>Rp. {{kbm.nominal}}</td>
               <td class="d-print-none">
                 <a href="#" id="btnEdit" 
-                    data-id="{{kb.pk}}"
-                    data-url="{% url 'core:kasbesarMasuk_edit_template' pk=kb.pk %}"
-                    data-url2="{% url 'core:kasbesarMasuk_edit' pk=kb.pk %}" href="#" 
+                    data-id="{{kbm.pk}}"
+                    data-url="{% url 'core:kasbesarMasuk_edit_template' pk=kbm.pk %}"
+                    data-url2="{% url 'core:kasbesarMasuk_edit' pk=kbm.pk %}" href="#" 
                     class="callme btn btn-yellow d-none d-sm-inline-block" data-bs-toggle="modal" >
                     <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" /><path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" /><line x1="16" y1="5" x2="19" y2="8" /></svg>
                 </a>
-                <a href="#" data-id="{{kb.pk}}" class="btnDelete btn btn-danger " data-url="{% url 'core:delete_kasbesar' pk=kb.pk %}" >Delete</a>
+                <a href="#" data-id="{{kbm.pk}}" class="btnDelete btn btn-danger " data-url="{% url 'core:delete_kasbesar' pk=kbm.pk %}" >Delete</a>
               </td>
             </tr>
             {% empty %}
@@ -254,7 +254,7 @@
                 (async () => {
 
                 const { value: formValues } = await Swal.fire({
-                title: 'Multiple inputs',
+                title: 'Ubah Kas Besar Masuk',
                 html:
                     htmlnya,
                 focusConfirm: false,
@@ -307,7 +307,7 @@
                             console.log(err);
                         });
                         Swal.fire('Tersimpan!', '', 'success');
-                        location.reload();
+                        //location.reload();
                     } else if (result.isDenied) {
                         Swal.fire('Perubahan dibatalkan', '', 'info')
                     }

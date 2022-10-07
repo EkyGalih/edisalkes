@@ -188,14 +188,13 @@ def edittemplatekbKeluar(request,pk):
 
 @login_required
 def editkasbesarKeluar(request,pk):
-    tr_obj = KasBesarKeluar.objects.get(pk=pk)
-    amount_item_f = tr_obj.nominal
+    kasBK_obj = KasBesarKeluar.objects.get(pk=pk)
+    amount_item_f = kasBK_obj.nominal
     if request.POST:
-        frm2 = KasBesarKeluarForm(request.POST, instance=tr_obj)
+        frm2 = KasBesarKeluarForm(request.POST, instance=kasBK_obj)
         
         if frm2.is_valid():
             frm2add = frm2.save(commit=False)
-            frm2add.nominal = frm2.nominal
             # frm2add.nominal -= amount_item_f + float(frm2add.nominal)
             frm2add.save()
             messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
@@ -204,6 +203,24 @@ def editkasbesarKeluar(request,pk):
         #print(frm2)
         return JsonResponse({'result':False})
     return redirect(reverse('core:kasbesar-keluar'))
+
+@login_required
+def editkasbesarMasuk(request,pk):
+    kasBM_obj = KasBesarMasuk.objects.get(pk=pk)
+    amount_item_f = kasBM_obj.nominal
+    if request.POST:
+        frm2 = KasBesarMasukForm(request.POST, instance=kasBM_obj)
+        
+        if frm2.is_valid():
+            frm2add = frm2.save(commit=False)
+            # frm2add.nominal -= amount_item_f + float(frm2add.nominal)
+            frm2add.save()
+            messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
+            return JsonResponse({'result':True})
+        print(frm2.errors)
+        #print(frm2)
+        return JsonResponse({'result':False})
+    return redirect(reverse('core:kasbesar-masuk'))
 
 @login_required
 def deleteKasBesar(request,pk):
