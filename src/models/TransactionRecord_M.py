@@ -199,7 +199,7 @@ class Sales(models.Model):
     vendor_name = models.ForeignKey(Lembaga, on_delete=models.SET_NULL, blank=True,
                                     null=True, db_column="lembaga_id", related_name="has_lembaga")
     pic = models.ForeignKey(Lembaga, on_delete=models.SET_NULL, blank=True,
-                                    null=True, db_column="pic_id", related_name="has_pic")
+                            null=True, db_column="pic_id", related_name="has_pic")
     # pelanggan = models.ForeignKey(Pelanggan, on_delete=models.SET_NULL, blank=True, null=True, db_column="pelanggan_id", related_name="has_pelanggan")
     total = models.FloatField()
     tax = models.FloatField()
@@ -306,7 +306,7 @@ class KasKecilDetail(models.Model):
         verbose_name_plural = 'Kas Kecil Detail'
 
 
-class KasBesar(models.Model):
+class KasBesarMasuk(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     tgl_pencatatan = models.DateTimeField(blank=True, null=True)
     no_transaksi = models.CharField(max_length=20)
@@ -316,13 +316,33 @@ class KasBesar(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(blank=True, null=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, db_column='created_by',
-                                   related_name='has_created_kasbesar_by', blank=True, null=True)
+                                   related_name='has_created_kasbesarmasuk_by', blank=True, null=True)
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, db_column='updated_by',
-                                   related_name='has_updated_kasbesar_by', blank=True, null=True)
+                                   related_name='has_updated_kasbesarmasuk_by', blank=True, null=True)
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.no_transaksi
 
     class Meta:
-        verbose_name_plural = 'Kas Besar'
+        verbose_name_plural = 'Kas Besar Masuk'
+
+
+class KasBesarKeluar(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tgl_pencatatan = models.DateTimeField(blank=True, null=True)
+    nominal = models.FloatField()
+    keterangan = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, db_column='created_by',
+                                   related_name='has_created_kasbesarkeluar_by', blank=True, null=True)
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, db_column='updated_by',
+                                   related_name='has_updated_kasbesarkeluar_by', blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.tgl_pencatatan
+
+    class Meta:
+        verbose_name_plural = 'Kas Besar Keluar'

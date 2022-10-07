@@ -1,8 +1,10 @@
 {% extends 'backend/base_backend.html' %}
 {% load static %}
 {% block kas %} active {% endblock %}
-{% block menu_kas %} show {% endblock %}
-{% block kas_besar %} active {% endblock %}
+{% block menu_kas1 %} show {% endblock %}
+{% block menu_kas2 %} show {% endblock %}
+{% block kas_besar_menu %} show {% endblock %}
+{% block kas_besar_masuk %} active {% endblock %}
 {% block title_header %}
 
 <!-- Page title -->
@@ -14,7 +16,7 @@
             Overview
         </div>
         <h2 class="page-title">
-            Kas Besar
+            Kas Besar Masuk
         </h2>
         </div>
         <!-- Page title actions -->
@@ -37,7 +39,7 @@
                 <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-kasbesar">
                 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                Tambah Kas Besar Baru
+                Tambah Kas Masuk
                 </a>
                 <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-purchase" aria-label="Create new">
                 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
@@ -75,7 +77,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for kb in kasbesar %}
+            {% for kb in kasbesarMasuk %}
             <tr>
               <td>
                 {{forloop.counter}}
@@ -88,8 +90,8 @@
               <td class="d-print-none">
                 <a href="#" id="btnEdit" 
                     data-id="{{kb.pk}}"
-                    data-url="{% url 'core:kasbesar_edit_template' pk=kb.pk %}"
-                    data-url2="{% url 'core:kasbesar_edit' pk=kb.pk %}" href="#" 
+                    data-url="{% url 'core:kasbesarMasuk_edit_template' pk=kb.pk %}"
+                    data-url2="{% url 'core:kasbesarMasuk_edit' pk=kb.pk %}" href="#" 
                     class="callme btn btn-yellow d-none d-sm-inline-block" data-bs-toggle="modal" >
                     <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" /><path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" /><line x1="16" y1="5" x2="19" y2="8" /></svg>
@@ -115,7 +117,7 @@
       <form method="POST">
       {% csrf_token %}
       <div class="modal-header">
-        <h5 class="modal-title">Kas Besar Baru</h5>
+        <h5 class="modal-title">Kas Besar Masuk Baru</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -164,7 +166,7 @@
         <button type="submit" class="btn btn-primary ms-auto">
           <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
           <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-          Simpan Kas Besar Baru
+          Simpan
         </button>
       </div>
       

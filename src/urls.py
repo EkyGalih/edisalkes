@@ -30,8 +30,11 @@ urlpatterns = [
     path('kas/kecil/delete/<str:pk>',KS.deleteKasKecil, name="delete_kaskecil"),
     path('kas/kecil/detail/delete/<str:pk>',KS.deleteItemKasKecil, name="kk_delete_item"),
 
-    path('kas/besar',KS.kasbesar, name="kasbesar"),
+    path('kas/besarkeluar',KS.kasbesarKeluar, name="kasbesar-keluar"),
+    path('kas/besarmasuk',KS.kasbesarMasuk, name="kasbesar-masuk"),
     path('kas/besar/delete/<str:pk>',KS.deleteKasBesar, name="delete_kasbesar"),
-    path('kas/besar/<str:pk>',KS.editkasbesar, name="kasbesar_edit"),
-    path('kas/besar/template/<str:pk>',KS.edittemplatekb, name="kasbesar_edit_template"),
+    path('kas/besar/<str:pk>',KS.editkasbesarKeluar, name="kasbesarKeluar_edit"),
+    #path('kas/besar/<str:pk>',KS.editkasbesarMasuk, name="kasbesarMasuk_edit"),
+    path('kas/besar/template/<str:pk>',KS.edittemplatekbKeluar, name="kasbesarKeluar_edit_template"),
+    path('kas/besar/template/<str:pk>',KS.edittemplatekbMasuk, name="kasbesarMasuk_edit_template"),
 ]
