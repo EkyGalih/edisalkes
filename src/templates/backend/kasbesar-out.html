@@ -244,7 +244,7 @@
                 (async () => {
 
                 const { value: formValues } = await Swal.fire({
-                title: 'Ubah Kas Besar Keluar',
+                title: 'Kas Keluar',
                 html:
                     htmlnya,
                 focusConfirm: false,
@@ -254,7 +254,7 @@
                 preConfirm: () => {
                     return [
                     document.getElementById('id_tgl_pencatatan_modal').value,
-                    document.getElementById('id_keterangan').value,
+                    document.getElementById('id_keterangan_modal').value,
                     document.getElementById('id_nominal_modal').value,
                     ]
                 }
@@ -268,7 +268,7 @@
                     title: 'Apakah anda yakin ingin merubah data ini?',
                     icon: 'info',
                     html:
-                        `Tanggal transaksi: <b>${formValues[0]}</b> `,
+                        `Tanggal Pencatatan: <b>${formValues[0]}</b> `,
                     showDenyButton: true,
                     showCancelButton: true,
                     confirmButtonText: 'Simpan',
@@ -280,8 +280,8 @@
                         var data = new FormData()
                         data.append('csrfmiddlewaretoken','{{ csrf_token }}');
                         data.append('tgl_pencatatan',formValues[0]);
-                        data.append('keterangan',formValues[3]);
-                        data.append('nominal',formValues[4]);
+                        data.append('keterangan',formValues[1]);
+                        data.append('nominal',formValues[2]);
 
                         axios.post(urlpostitem, data)
                         .then(function (res) {

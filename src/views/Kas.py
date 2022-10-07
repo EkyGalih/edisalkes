@@ -191,16 +191,16 @@ def editkasbesarKeluar(request,pk):
     kasBK_obj = KasBesarKeluar.objects.get(pk=pk)
     amount_item_f = kasBK_obj.nominal
     if request.POST:
-        frm2 = KasBesarKeluarForm(request.POST, instance=kasBK_obj)
+        FrmKbk = KasBesarKeluarForm(request.POST, instance=kasBK_obj)
         
-        if frm2.is_valid():
-            frm2add = frm2.save(commit=False)
-            # frm2add.nominal -= amount_item_f + float(frm2add.nominal)
-            frm2add.save()
+        if FrmKbk.is_valid():
+            FrmKbkadd = FrmKbk.save(commit=False)
+            # FrmKbkadd.nominal -= amount_item_f + float(FrmKbkadd.nominal)
+            FrmKbkadd.save()
             messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
             return JsonResponse({'result':True})
-        print(frm2.errors)
-        #print(frm2)
+        print(FrmKbk.errors)
+        print(FrmKbk)
         return JsonResponse({'result':False})
     return redirect(reverse('core:kasbesar-keluar'))
 
@@ -209,16 +209,16 @@ def editkasbesarMasuk(request,pk):
     kasBM_obj = KasBesarMasuk.objects.get(pk=pk)
     amount_item_f = kasBM_obj.nominal
     if request.POST:
-        frm2 = KasBesarMasukForm(request.POST, instance=kasBM_obj)
+        FrmKbm = KasBesarMasukForm(request.POST, instance=kasBM_obj)
         
-        if frm2.is_valid():
-            frm2add = frm2.save(commit=False)
-            # frm2add.nominal -= amount_item_f + float(frm2add.nominal)
-            frm2add.save()
+        if FrmKbm.is_valid():
+            FrmKbmadd = FrmKbm.save(commit=False)
+            # FrmKbmadd.nominal -= amount_item_f + float(FrmKbmadd.nominal)
+            FrmKbmadd.save()
             messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
             return JsonResponse({'result':True})
-        print(frm2.errors)
-        #print(frm2)
+        print(FrmKbm.errors)
+        #print(FrmKbm)
         return JsonResponse({'result':False})
     return redirect(reverse('core:kasbesar-masuk'))
 
