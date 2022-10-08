@@ -126,35 +126,35 @@
                 <ul class="dropdown-menu{% block menu_kas2 %}{% endblock %}">
 					<li class="dropdown-item">
 						<ul class="nav-item dropdown{% block kas_besar %}{%endblock%}">
-							<a class="nav-link dropdown-toggle{% block menu_kas_besar1 %}{% endblock %}" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
+							<a class="nav-link dropdown-toggle{% block menu_kas_besar1 %}{% endblock %}" href="#navbar-extra-kas-besar" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
 								<span class="nav-link-title caret">
 								  Kas Besar
 								</span>
 							  </a>
 							<div class="dropdown-menu{% block kas_besar_menu %}{% endblock %}">
-								<a class="dropdown-item{% block kas_besar_keluar %}{%endblock%}" href="{% url 'core:kasbesar-keluar' %}" >
-									Kas Keluar
-								</a>
 								<a class="dropdown-item{% block kas_besar_masuk %}{% endblock %}" href="{% url 'core:kasbesar-masuk' %}" >
 									Kas Masuk
+								</a>
+								<a class="dropdown-item{% block kas_besar_keluar %}{%endblock%}" href="{% url 'core:kasbesar-keluar' %}" >
+									Kas Keluar
 								</a>
 							</div>
 						</ul>
 					</li>
-					<li class="dropdown-item {% block kas_kecil %}{% endblock %}">
-						<ul class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
+					<li class="dropdown-item">
+						<ul class="nav-item dropdown{% block kas_kecil %}{%endblock%}">
+							<a class="nav-link dropdown-toggle{% block menu_kas_kecil %}{%endblock%}" href="#navbar-extra-kas-kecil" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
 								<span class="nav-link-title">
 								  Kas Kecil
 								</span>
 							  </a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" href="{% url 'core:kaskecil' %}" >
+							<div class="dropdown-menu{% block kas_kecil_menu %}{% endblock %}">
+								<a class="dropdown-item{% block kas_kecil_masuk %}{% endblock %}" href="{% url 'core:kaskecil-masuk' %}" >
 									Kas Masuk
 								</a>
-								<a class="dropdown-item" href="{% url 'core:kaskecil' %}" >
+								{% comment %} <a class="dropdown-item{% block kas_kecil_keluar %}{% endblock %}" href="{% url 'core:kaskecil' %}" >
 									Kas Keluar
-								</a>
+								</a> {% endcomment %}
 							</div>
 						</ul>
 					</li>

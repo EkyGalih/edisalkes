@@ -3,36 +3,89 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from src.forms.kas_forms import KasBesarKeluarForm, KasBesarMasukForm, KasKecilDetailForm, KasKecilForm, KasKecilFormEdit
+from src.forms.kas_forms import KasBesarKeluarForm, KasBesarMasukForm, KasKecilDetailForm, KasKecilMasukForm, KasKecilKeluarForm, KasKecilFormEdit
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 from django.http import JsonResponse
 from django.template.loader import get_template, render_to_string
-from src.models.TransactionRecord_M import KasBesarKeluar, KasBesarMasuk, KasKecil, KasKecilDetail, Karyawan
+from src.models.TransactionRecord_M import KasBesarKeluar, KasBesarMasuk, KasKecil, KasKecilDetail, Karyawan, Sales
+from django.db.models import Sum, Q
+from datetime import datetime, timedelta
 
 @login_required
-def kaskecil(request):
-    frm = KasKecilForm
+def kaskecilMasuk(request):
+    
+    frm = KasKecilMasukForm
+    kk_list = KasBesarKeluar.objects.filter(created_by=request.user)
+    saldo_kas_masuk = KasBesarKeluar.objects.values('nominal', 'created_at').annotate(
+        jual=Sum('nominal', filter=Q(created_at__gte=datetime.now()-timedelta(days=7))))
+    
+    if "q" in request.GET and request.GET["q"] != "":
+        kk_list = KasBesarKeluar.objects.filter(created_by=request.user, no_kas=request.GET['q'])
+    if request.POST:
+        frm = KasKecilMasukForm(request.POST)
+        if frm.is_valid():
+            addfrm = frm.save(commit=False)
+            addfrm.created_by = request.user
+            addfrm.save()
+            messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
+            return redirect(reverse('core:kaskecil-masuk'))
+        else:
+            print("form tidak valid")
+    print(saldo_kas_masuk)
+    context = {"frm":frm,"kaskecilMasuk":kk_list,'skm':saldo_kas_masuk}
+    return render(request,'backend/kaskecil-in.html', context)
+
+@login_required
+def kaskecilKeluar(request):
+    frm = KasKecilKeluarForm
     kk_list = KasKecil.objects.filter(created_by=request.user)
     if "q" in request.GET and request.GET["q"] != "":
         kk_list = KasKecil.objects.filter(created_by=request.user, no_kas=request.GET['q'])
     if request.POST:
-        frm = KasKecilForm(request.POST)
+        frm = KasKecilKeluarForm(request.POST)
         if frm.is_valid():
             addfrm = frm.save(commit=False)
             addfrm.created_by = request.user
             addfrm.nominal = 0
             addfrm.save()
             messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
-            return redirect(reverse('core:kaskecil_detail', kwargs={'pk':addfrm.pk}))
+            return redirect(reverse('core:kaskecil_detail_keluar', kwargs={'pk':addfrm.pk}))
         else:
             print("form tidak valid")
 
     context = {"frm":frm,"kaskecil":kk_list}
-    return render(request,'backend/kaskecil.html', context)
+    return render(request,'backend/kaskecil-out.html', context)
 
 @login_required
-def kaskecilDetail(request,pk):
+def edittemplatekkMasuk(request,pk):
+    kkm_obj = KasBesarMasuk.objects.get(pk=pk)
+    kkm = KasBesarKeluarForm(request.POST, instance=kkm_obj)
+    # print(frm)
+    html  = render_to_string("backend/particial-modal/form-edit-kaskecil-keluar.html",{"frm":kkm,"trs":kkm_obj})
+    data = {'html': html}
+    return JsonResponse(data)
+
+@login_required
+def editkaskecilMasuk(request,pk):
+    kasBM_obj = KasBesarMasuk.objects.get(pk=pk)
+    amount_item_f = kasBM_obj.nominal
+    if request.POST:
+        FrmKbm = KasBesarMasukForm(request.POST, instance=kasBM_obj)
+        
+        if FrmKbm.is_valid():
+            FrmKbmadd = FrmKbm.save(commit=False)
+            # FrmKbmadd.nominal -= amount_item_f + float(FrmKbmadd.nominal)
+            FrmKbmadd.save()
+            messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
+            return JsonResponse({'result':True})
+        print(FrmKbm.errors)
+        #print(FrmKbm)
+        return JsonResponse({'result':False})
+    return redirect(reverse('core:kasbesar-masuk'))
+
+@login_required
+def kaskecilDetailKeluar(request,pk):
     tr_obj = KasKecil.objects.get(pk=pk)
     kaskecil_item = KasKecilDetail.objects.filter(kk=pk)
     frm = KasKecilFormEdit(instance=tr_obj)
@@ -54,13 +107,13 @@ def kaskecilDetail(request,pk):
                 frm2add.save()
                 frmadd.save()
                 messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
-                return redirect(reverse('core:kaskecil_detail', kwargs={'pk':pk}))
+                return redirect(reverse('core:kaskecil_detail_keluar', kwargs={'pk':pk}))
             frmadd.save()
             messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
-            return redirect(reverse('core:kaskecil_detail', kwargs={'pk':pk}))
+            return redirect(reverse('core:kaskecil_detail_keluar', kwargs={'pk':pk}))
         
     context = {"trs":tr_obj, "frm2":frm2,"kaskecil_item":kaskecil_item,"frm":frm,"kar":kar}
-    return render(request, "backend/detail-kaskecil.html",context)
+    return render(request, "backend/detail-kaskecil-out.html",context)
 
 @login_required
 def edittemplateitemkk(request,pk):
@@ -91,7 +144,7 @@ def edititemkaskecil(request,pk):
         print(frm2.errors)
         print(frm2)
         return JsonResponse({'result':False})
-    return redirect(reverse('core:kaskecil_detail', kwargs={'pk':kk}))
+    return redirect(reverse('core:kaskecil_detail_keluar', kwargs={'pk':kk}))
 
 @login_required
 def deleteKasKecil(request,pk):
@@ -223,12 +276,27 @@ def editkasbesarMasuk(request,pk):
     return redirect(reverse('core:kasbesar-masuk'))
 
 @login_required
-def deleteKasBesar(request,pk):
-    kb = KasBesarMasuk.objects.get(pk=pk)
+def deleteKasBesarKeluar(request,pk):
+   
+    kbk = KasBesarKeluar.objects.get(pk=pk)
+
     if request.POST:
         try:
-            kb.delete()
+            kbk.delete()
             return JsonResponse({'result':True})
         except:
             return JsonResponse({'result':False})
     return JsonResponse({'result':False,'method':'get'})
+
+@login_required
+def deleteKasBesarMasuk(request,pk):
+    
+    kbm = KasBesarMasuk.objects.get(pk=pk)
+    
+    if request.POST:
+        try:
+            kbm.delete()
+            return JsonResponse({'result':True})
+        except:
+            return JsonResponse({'result':False})
+    return JsonResponse({'result':False,'method':'get'})    

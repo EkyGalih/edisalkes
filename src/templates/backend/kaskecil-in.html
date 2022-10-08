@@ -1,11 +1,12 @@
 {% extends 'backend/base_backend.html' %}
 {% load static %}
+{% load humanize %}
 {% load main_tags %}
 {% block kas %} active {% endblock %}
 {% block menu_kas1 %} show {% endblock %}
 {% block menu_kas2 %} show {% endblock %}
-{% block kas_besar_menu %} show {% endblock %}
-{% block kas_besar_keluar %} active {% endblock %}
+{% block kas_kecil_menu %} show {% endblock %}
+{% block kas_kecil_masuk %} active {% endblock %}
 {% block title_header %}
 
 <!-- Page title -->
@@ -17,7 +18,8 @@
             Overview
         </div>
         <h2 class="page-title">
-            Kas Besar Keluar
+            Saldo Awal
+            Rp. {{ skm.0.nominal|floatformat:2|intcomma}}
         </h2>
         </div>
         <!-- Page title actions -->
@@ -37,12 +39,12 @@
                 <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-sales" onclick="javascript:window.print();">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" /><path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" /><rect x="7" y="13" width="10" height="8" rx="2" /></svg>
                 </a>
-                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-kasbesar">
+                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-kaskecil">
                 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                Tambah Kas Keluar
+                Tambah Kas Kecil Baru
                 </a>
-                <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-purchase" aria-label="Create new">
+                <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-purchase" aria-label="Create new purchase">
                 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                 </a>
@@ -69,33 +71,34 @@
           <thead>
             <tr>
               <th>No</th>
-              <th>Tanggal Transaksi</th>
+              <th>Tanggal Pencatatan</th>
               <th>Keterangan</th>
               <th>Nominal</th>
               <th class="w-1 d-print-none"></th>
             </tr>
           </thead>
           <tbody>
-            {% for kbk in kasbesarKeluar %}
+            {% for kkm in kaskecilMasuk %}
             <tr>
               <td>
                 {{forloop.counter}}
               </td>
-              <td>{{kbk.tgl_pencatatan|date:'M d, Y'}}</td>
-              <td>{{kbk.keterangan}}</td>
-              <td>{{kbk.nominal|floatformat:0|format_rupiah}}</td>
+              <td>{{kkm.tgl_pencatatan|date:'M d, Y'}}</td>
+              <td>{{kkm.keterangan}}</td>
+              <td>{{kkm.nominal|floatformat:0|format_rupiah}}</td>
               <td></td>
               <td class="d-print-none">
                 <a href="#" id="btnEdit" 
-                    data-id="{{kbk.pk}}"
-                    data-url="{% url 'core:kasbesarKeluar_edit_template' pk=kbk.pk %}"
-                    data-urlkeluar="{% url 'core:kasbesarKeluar_edit' pk=kbk.pk %}" href="#" 
+                    data-id="{{kkm.pk}}"
+                    data-url="{% url 'core:kasbesarKeluar_edit_template' pk=kkm.pk %}"
+                    data-urlkeluar="{% url 'core:kasbesarKeluar_edit' pk=kkm.pk %}" href="#" 
                     class="callme btn btn-yellow d-none d-sm-inline-block" data-bs-toggle="modal" >
                     <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                     {% comment %} <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" /><path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" /><line x1="16" y1="5" x2="19" y2="8" /></svg> {% endcomment %}
                     Edit
                 </a>
-                <a href="#" data-id="{{kbk.pk}}" class="btnDelete btn btn-danger " data-url="{% url 'core:delete_kasbesar_keluar' pk=kbk.pk %}" >Delete</a>
+                {% comment %} <a href="{% url 'core:kaskecil_detail' pk=kkm.pk %}" class="btn btn-info ">Edit</a> {% endcomment %}
+                <a href="#" data-id="{{kkm.pk}}" class="btnDelete btn btn-danger " data-url="{% url 'core:delete_kaskecil' pk=kkm.pk %}" >Delete</a>
               </td>
             </tr>
             {% empty %}
@@ -110,13 +113,13 @@
 
 {% block modals_here %}
 
-<div class="modal modal-blur fade" id="modal-kasbesar" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modal-blur fade" id="modal-kaskecil" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <form method="POST">
       {% csrf_token %}
       <div class="modal-header">
-        <h5 class="modal-title">Kas Besar Keluar Baru</h5>
+        <h5 class="modal-title">Kas Kecil Baru</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -131,19 +134,17 @@
                 {{frm.tgl_pencatatan}}
             </div>
         </div>
+
+        <div class="mb-3">
+          <label class="form-label">Keterangan</label>
+          <!-- <input type="text" class="form-control" name="example-text-input" placeholder="Nama Pelanggan"> -->
+          {{frm.keterangan}}
+        </div>
         
         <div class="mb-3">
-            <label class="form-label">Nominal</label>
-            <!-- <input type="text" class="form-control" name="example-text-input" placeholder="Nama Pelanggan"> -->
-            {{frm.nominal}}
-        </div>
-        <div class="mb-3">
-            <input type="hidden" class="form-control" name="jenis_kas" value="Keluar">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Keterangan</label>
-            <!-- <input type="text" class="form-control" name="example-text-input" placeholder="Nama Pelanggan"> -->
-            {{ frm.keterangan }}
+          <label class="form-label">Nominal</label>
+          <!-- <input type="text" class="form-control" name="example-text-input" placeholder="Nama Pelanggan"> -->
+          {{frm.nominal}}
         </div>
         
       </div>
@@ -188,50 +189,50 @@
 
 <script>
 
-    $('.btnDelete').click(function(){
-        urldelitem=$(this).data('url');
-        iddel=$(this).data('id');
-        var data = new FormData()
-        data.append('csrfmiddlewaretoken','{{ csrf_token }}')
+  $('.btnDelete').click(function(){
+      urldelitem=$(this).data('url');
+      iddel=$(this).data('id');
+      var data = new FormData()
+      data.append('csrfmiddlewaretoken','{{ csrf_token }}')
 
-        Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-        showLoaderOnConfirm: true,
-        }).then((result) => {
-        if (result.isConfirmed) {
-            axios.post(urldelitem, data)
-            .then(function (res) {
-                Swal.fire(
-                    'Deleted!',
-                    `Your data has been deleted.`,
-                    'success'
-                );
-                location.reload();
-            })
-            .catch(function (err) {
-                this.isError = true;
-                console.log(err);
-                Swal.fire(
-                    'Gagal!',
-                    `Your data has not been deleted.`,
-                    'danger'
-                );
-                location.reload();
-            // output.className = 'container text-danger';
-            // output.innerHTML = err.message;
-            });
-            
-        }
-        })
-    });
+      Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      showLoaderOnConfirm: true,
+      }).then((result) => {
+      if (result.isConfirmed) {
+          axios.post(urldelitem, data)
+          .then(function (res) {
+              Swal.fire(
+                  'Deleted!',
+                  `Your data has been deleted.`,
+                  'success'
+              );
+              location.reload();
+          })
+          .catch(function (err) {
+              this.isError = true;
+              console.log(err);
+              Swal.fire(
+                  'Gagal!',
+                  `Your data has not been deleted.`,
+                  'danger'
+              );
+              location.reload();
+          // output.className = 'container text-danger';
+          // output.innerHTML = err.message;
+          });
+          
+      }
+      })
+  });
 
-    $('.callme').click(function(){
+  $('.callme').click(function(){
             id=$(this).data('id');urlitem=$(this).data('url');urlpostitem=$(this).data('urlkeluar');
             
             Swal.showLoading();

@@ -36,14 +36,29 @@ class KasBesarKeluarForm(forms.ModelForm):
         self.fields['keterangan'].widget.attrs['class'] = "form-control"
         self.fields['nominal'].widget.attrs['class'] = "form-control"
 
-class KasKecilForm(forms.ModelForm):
+class KasKecilMasukForm(forms.ModelForm):
+    
+    class Meta:
+        model = KasBesarKeluar
+        fields = ('tgl_pencatatan', 'keterangan', 'nominal')
+        
+    def __init__(self, *args, **kwargs):
+        super(KasKecilMasukForm, self).__init__(*args, **kwargs)
+        self.fields["tgl_pencatatan"].required = True
+        self.fields["keterangan"].required = True
+        self.fields["nominal"].required = True
+        self.fields['tgl_pencatatan'].widget.attrs['class'] = "form-control"
+        self.fields['keterangan'].widget.attrs['class'] = "form-control"
+        self.fields['nominal'].widget.attrs['class'] = "form-control"
+
+class KasKecilKeluarForm(forms.ModelForm):
 
     class Meta:
         model = KasKecil
         fields = ('tgl_pencatatan','no_kas','nama_karyawan')
 
     def __init__(self, *args, **kwargs):
-        super(KasKecilForm, self).__init__(*args, **kwargs)
+        super(KasKecilKeluarForm, self).__init__(*args, **kwargs)
         self.fields["tgl_pencatatan"].required = True
         self.fields["no_kas"].required = True
         self.fields["nama_karyawan"].required = True

@@ -79,12 +79,12 @@
               <td>
                 {{forloop.counter}}
               </td>
-              <td>{{ks.tgl_pencatatan}}</td>
+              <td>{{ks.tgl_pencatatan|date:'M d, Y'}}</td>
               <td><span class="text-purple">#{{ks.no_kas}}</span></td>
               <td>{{ks.nama_karyawan}}</td>
               <td>Rp. {{ks.nominal}}</td>
               <td class="d-print-none">
-                <a href="{% url 'core:kaskecil_detail' pk=ks.pk %}" class="btn btn-info ">Edit</a>
+                <a href="{% url 'core:kaskecil_detail_keluar' pk=ks.pk %}" class="btn btn-info ">Edit</a>
                 <a href="#" data-id="{{ks.pk}}" class="btnDelete btn btn-danger " data-url="{% url 'core:delete_kaskecil' pk=ks.pk %}" >Delete</a>
               </td>
             </tr>
