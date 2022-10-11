@@ -4,7 +4,7 @@
 <select id="id_product_name_modal" class="swal2-input">
     {% for st in stok %}
     {% if st.pk == trs.product_name.pk %}
-    <option data-price="{{st.harga_beli}}" value="{{st.pk}}" selected> {{st}}</option>
+    <option data-price="{{st.harga_beli}}" value="{{st.pk}}" selected> {{sts}}</option>
     {% else %}
     <option data-price="{{st.harga_beli}}" value="{{st.pk}}"> {{st}}</option>
     {% endif %}

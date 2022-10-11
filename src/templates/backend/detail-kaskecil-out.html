@@ -1,6 +1,12 @@
 {% extends 'backend/base_backend.html' %}
 {% load static %}
 {% load humanize %}
+{% load main_tags %}
+{% block kas %} active {% endblock %}
+{% block menu_kas1 %} show {% endblock %}
+{% block menu_kas2 %} show {% endblock %}
+{% block kas_kecil_menu %} show {% endblock %}
+{% block kas_kecil_keluar %} active {% endblock %}
 {% block title_header %}
 
 <!-- Page title -->
@@ -188,7 +194,7 @@
                     New view
                 </a>
                 </span> -->
-                <a href="{% url 'core:kaskecil' %}" class="btn btn-success d-none d-sm-inline-block" >
+                <a href="{% url 'core:kaskecil-keluar' %}" class="btn btn-success d-none d-sm-inline-block" >
                     
 	                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 13l-4 -4l4 -4m-4 4h11a4 4 0 0 1 0 8h-1" /></svg>
                     Kembali
@@ -252,6 +258,22 @@
         $('#save_kaskecil_item').on("click", function(){
             alert("apakah anda yakin?");
             $('#formKasKecil').submit();
+        });
+
+        $('#id_id_kebutuhan').change(function(){
+            var beban = $(this);
+            jenis_biaya = beban.find(':selected').data('jbeban');
+            unit_price = beban.find(':selected').data('unit_price')
+            console.log(jenis_biaya);
+            $('#id_jenis_kebutuhan').val(jenis_biaya);
+            $('#id_unit_price').val(unit_price);
+            quantity = 0;
+            if($('#id_quantity').val()){
+                quantity = $('#id_quantity').val();
+            }
+            amount = parseInt(unit_price) * parseInt(quantity);
+            $('#id_amount').val(amount);
+            $('id_jenis_kebutuhan').prop('readOnly', true);
         });
 
         callme = function(){

@@ -1,8 +1,11 @@
 {% extends 'backend/base_backend.html' %}
 {% load static %}
+{% load main_tags %}
 {% block kas %} active {% endblock %}
-{% block menu_kas %} show {% endblock %}
-{% block kas_kecil %} active {% endblock %}
+{% block menu_kas1 %} show {% endblock %}
+{% block menu_kas2 %} show {% endblock %}
+{% block kas_kecil_menu %} show {% endblock %}
+{% block kas_kecil_keluar %} active {% endblock %}
 {% block title_header %}
 
 <!-- Page title -->
@@ -66,10 +69,11 @@
           <thead>
             <tr>
               <th>No</th>
-              <th>Tanggal Pencatatan</th>
-              <th>No Kas</th>
-              <th>Nama Karyawan</th>
-              <th>Nominal</th>
+              <th>ID Beban/Biaya</th>
+              <th>Jenis Beban/Biaya</th>
+              <th>Quantity</th>
+              <th>Unit Price</th>
+              <th>Amount</th>
               <th class="w-1 d-print-none"></th>
             </tr>
           </thead>
@@ -82,7 +86,8 @@
               <td>{{ks.tgl_pencatatan|date:'M d, Y'}}</td>
               <td><span class="text-purple">#{{ks.no_kas}}</span></td>
               <td>{{ks.nama_karyawan}}</td>
-              <td>Rp. {{ks.nominal}}</td>
+              <td>{{ks.nominal|floatformat:0|format_rupiah}}</td>
+              <td></td>
               <td class="d-print-none">
                 <a href="{% url 'core:kaskecil_detail_keluar' pk=ks.pk %}" class="btn btn-info ">Edit</a>
                 <a href="#" data-id="{{ks.pk}}" class="btnDelete btn btn-danger " data-url="{% url 'core:delete_kaskecil' pk=ks.pk %}" >Delete</a>

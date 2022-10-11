@@ -293,7 +293,7 @@ class KasKecilDetail(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     kk = models.ForeignKey(KasKecil, on_delete=models.CASCADE,
                            db_column="kaskecil_id", related_name="has_kaskecil_detail")
-    id_kebutuhan = models.CharField(max_length=30)
+    id_kebutuhan = models.ForeignKey(Beban, on_delete=models.CASCADE, db_column="id_kebutuhan", related_name="has_kebutuhan_detail")
     jenis_kebutuhan = models.CharField(max_length=191)
     quantity = models.SmallIntegerField()
     unit_price = models.FloatField()

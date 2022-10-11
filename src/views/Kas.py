@@ -3,12 +3,13 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from numpy import object_
 from src.forms.kas_forms import KasBesarKeluarForm, KasBesarMasukForm, KasKecilDetailForm, KasKecilMasukForm, KasKecilKeluarForm, KasKecilFormEdit
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 from django.http import JsonResponse
 from django.template.loader import get_template, render_to_string
-from src.models.TransactionRecord_M import KasBesarKeluar, KasBesarMasuk, KasKecil, KasKecilDetail, Karyawan, Sales
+from src.models.TransactionRecord_M import Beban, KasBesarKeluar, KasBesarMasuk, KasKecil, KasKecilDetail, Karyawan, Sales
 from django.db.models import Sum, Q
 from datetime import datetime, timedelta
 
@@ -62,7 +63,15 @@ def edittemplatekkMasuk(request,pk):
     kkm_obj = KasBesarMasuk.objects.get(pk=pk)
     kkm = KasBesarKeluarForm(request.POST, instance=kkm_obj)
     # print(frm)
-    html  = render_to_string("backend/particial-modal/form-edit-kaskecil-keluar.html",{"frm":kkm,"trs":kkm_obj})
+    html  = render_to_string("backend/particial-modal/form-edit-kaskecil-masuk.html",{"frm":kkm,"trs":kkm_obj})
+    data = {'html': html}
+    return JsonResponse(data)
+
+def edittemplatekkKeluar(request,pk):
+    kkk_obj = kaskecilKeluar.object.get(pk=pk)
+    kkk = KasKecilKeluarForm(request.POST, instance=kkk_obj)
+    beban = Beban.objects.all()
+    html = render_to_string("backend/particial-modal/form-edit-kasbesar-keluar.html",{"frm":kkk,"trs":kkk_obj,"beban":beban})
     data = {'html': html}
     return JsonResponse(data)
 

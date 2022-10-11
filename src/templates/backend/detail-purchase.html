@@ -348,7 +348,7 @@
             $('#id_receiver_name').removeAttr("readonly");
             $('#id_ongkos_kirim').removeAttr("readonly");
             $('#id_nomor_surat_jalan').removeAttr("readonly");
-            {% comment %} $('#id_dp').removeAttr("readonly"); {% endcomment %}
+            //$('#id_dp').removeAttr("readonly");
             $('#id_tax_persen').removeAttr("readonly");
             $('#save_purchase').attr("class","btn btn-primary d-none d-sm-inline-block");
             $('#edit_purchase').attr("class","btn btn-grey d-none d-sm-inline-block");
@@ -378,6 +378,7 @@
         $('#id_product_name').change(function(){
             var produk = $(this);
             harga = produk.find(':selected').data('price');
+            console.log(produk);
             $('#id_unit_price').val(harga);
             quantity = 0;
             if($('#id_quantity').val()){

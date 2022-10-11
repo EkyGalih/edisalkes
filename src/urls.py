@@ -32,6 +32,7 @@ urlpatterns = [
     path('kas/kecil/detail/delete/<str:pk>',KS.deleteItemKasKecil, name="kk_delete_item"),
     path('kas/kecil/masuk/<str:pk>',KS.editkaskecilMasuk, name="kaskecilmasuk_edit"),
     path('kas/kecil/masuk/template/<str:pk>',KS.edittemplatekkMasuk, name="kaskecilmasuk_edit_template"),
+    path('kas/kecil/keluar/template/<str:pk>',KS.edittemplatekkKeluar, name="kaskecilKeluar_edit_template"),
 
     path('kas/besarkeluar',KS.kasbesarKeluar, name="kasbesar-keluar"),
     path('kas/besarmasuk',KS.kasbesarMasuk, name="kasbesar-masuk"),
