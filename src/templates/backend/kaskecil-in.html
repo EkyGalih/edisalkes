@@ -19,7 +19,9 @@
         </div>
         <h2 class="page-title">
             Saldo Awal
-            Rp. {{ skm.0.nominal|floatformat:2|intcomma}}
+            {%for saldo in ts %}
+            Rp. {{ saldo.total_kas|floatformat:2|intcomma }}
+            {%endfor%}
         </h2>
         </div>
         <!-- Page title actions -->

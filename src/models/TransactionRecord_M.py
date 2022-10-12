@@ -1,4 +1,5 @@
 from email.policy import default
+from tabnanny import verbose
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from src.models import User
@@ -38,6 +39,17 @@ class Lembaga(models.Model):
 
     class Meta:
         verbose_name_plural = 'Manajemen Lembaga/Instansi'
+
+
+class PIC(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    pic = models.CharField('pic', max_length=191)
+
+    def __str__(self):
+        return self.nama_pic
+
+    class Meta:
+        verbose_name_plural = 'PIC'
 
 
 class Karyawan(models.Model):
@@ -198,8 +210,7 @@ class Sales(models.Model):
     transaction_date = models.DateTimeField()
     vendor_name = models.ForeignKey(Lembaga, on_delete=models.SET_NULL, blank=True,
                                     null=True, db_column="lembaga_id", related_name="has_lembaga")
-    pic = models.ForeignKey(Lembaga, on_delete=models.SET_NULL, blank=True,
-                            null=True, db_column="pic_id", related_name="has_pic")
+    pic = models.CharField(max_length=255, blank=True, null=True)
     # pelanggan = models.ForeignKey(Pelanggan, on_delete=models.SET_NULL, blank=True, null=True, db_column="pelanggan_id", related_name="has_pelanggan")
     total = models.FloatField()
     tax = models.FloatField()
@@ -293,7 +304,8 @@ class KasKecilDetail(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     kk = models.ForeignKey(KasKecil, on_delete=models.CASCADE,
                            db_column="kaskecil_id", related_name="has_kaskecil_detail")
-    id_kebutuhan = models.ForeignKey(Beban, on_delete=models.CASCADE, db_column="id_kebutuhan", related_name="has_kebutuhan_detail")
+    id_kebutuhan = models.ForeignKey(
+        Beban, on_delete=models.CASCADE, db_column="id_kebutuhan", related_name="has_kebutuhan_detail")
     jenis_kebutuhan = models.CharField(max_length=191)
     quantity = models.SmallIntegerField()
     unit_price = models.FloatField()
@@ -346,3 +358,13 @@ class KasBesarKeluar(models.Model):
 
     class Meta:
         verbose_name_plural = 'Kas Besar Keluar'
+        
+class TotalKasBesarKeluar(models.Model):
+    id = models.CharField(primary_key=True, max_length=10, editable=False)
+    total_kas = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.total_kas
+    
+    class Meta:
+        verbose_name_plural = 'Total Kas Besar Keluar'

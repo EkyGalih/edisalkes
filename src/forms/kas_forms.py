@@ -35,6 +35,17 @@ class KasBesarKeluarForm(forms.ModelForm):
         self.fields['tgl_pencatatan'].widget.attrs['class'] = "form-control"
         self.fields['keterangan'].widget.attrs['class'] = "form-control"
         self.fields['nominal'].widget.attrs['class'] = "form-control"
+        
+class TotalKasBesarKeluarForm(forms.ModelForm):
+    
+    class Meta:
+        model = TotalKasBesarKeluar
+        fields = ('total_kas',)
+        
+    def __init__(self, *args, **kwargs):
+        super(TotalKasBesarKeluarForm, self).__init__(*args, **kwargs)
+        self.fields["total_kas"].required = True
+        self.fields['total_kas'].widget.attrs['class'] = "form-control"
 
 class KasKecilMasukForm(forms.ModelForm):
     

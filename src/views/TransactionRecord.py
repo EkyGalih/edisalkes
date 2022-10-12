@@ -187,7 +187,8 @@ def sales(request):
     frm_pel = LembagaForm
     sale_list = Sales.objects.filter(created_by=request.user)
     status_pel = 0
-    pic = PicForm
+    pic = Lembaga.objects.values('pic')
+    
     if "q" in request.GET and request.GET["q"] != "":
         sale_list = Sales.objects.filter(created_by=request.user, invoice_no=request.GET['q'])
     if request.POST:

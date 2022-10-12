@@ -138,6 +138,12 @@
             {{frm.nominal}}
         </div>
         <div class="mb-3">
+            <!-- <input type="text" class="form-control" name="example-text-input" placeholder="Nama Pelanggan"> -->
+            {%for t_kas in totalKas %}
+              <input type="text" class="form-control" name="total_kas" value="{{t_kas.total_kas|floatformat:0}}">
+            {%endfor%}
+        </div>
+        <div class="mb-3">
             <input type="hidden" class="form-control" name="jenis_kas" value="Keluar">
         </div>
         <div class="mb-3">
@@ -230,6 +236,8 @@
         }
         })
     });
+
+    
 
     $('.callme').click(function(){
             id=$(this).data('id');urlitem=$(this).data('url');urlpostitem=$(this).data('urlkeluar');

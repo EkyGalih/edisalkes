@@ -14,6 +14,7 @@ class SalesForm(forms.ModelForm):
         super(SalesForm, self).__init__(*args, **kwargs)
         self.fields["transaction_date"].required = True
         self.fields["vendor_name"].required = True
+        self.fields["pic"].required = True
         self.fields['transaction_date'].widget.attrs['class'] = "form-control"
         self.fields['vendor_name'].widget.attrs['class'] = "form-control"
         self.fields['pic'].widget.attrs['class'] = "form-control"
