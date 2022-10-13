@@ -358,13 +358,14 @@ class KasBesarKeluar(models.Model):
 
     class Meta:
         verbose_name_plural = 'Kas Besar Keluar'
-        
+
+
 class TotalKasBesarKeluar(models.Model):
     id = models.CharField(primary_key=True, max_length=10, editable=False)
-    total_kas = models.CharField(max_length=255)
-    
+    total_kas = models.FloatField()
+
     def __str__(self):
         return self.total_kas
-    
+
     class Meta:
         verbose_name_plural = 'Total Kas Besar Keluar'

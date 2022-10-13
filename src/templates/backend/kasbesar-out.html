@@ -140,7 +140,7 @@
         <div class="mb-3">
             <!-- <input type="text" class="form-control" name="example-text-input" placeholder="Nama Pelanggan"> -->
             {%for t_kas in totalKas %}
-              <input type="text" class="form-control" name="total_kas" value="{{t_kas.total_kas|floatformat:0}}">
+              <input type="hidden" class="form-control" name="total_kas" value="{{t_kas.total_kas|floatformat:0}}">
             {%endfor%}
         </div>
         <div class="mb-3">
@@ -265,6 +265,7 @@
                     document.getElementById('id_tgl_pencatatan_modal').value,
                     document.getElementById('id_keterangan_modal').value,
                     document.getElementById('id_nominal_modal').value,
+                    document.getElementById('id_total_kas_modal').value,
                     ]
                 }
                 })
@@ -291,6 +292,7 @@
                         data.append('tgl_pencatatan',formValues[0]);
                         data.append('keterangan',formValues[1]);
                         data.append('nominal',formValues[2]);
+                        data.append('total_kas',formValues[3]);
 
                         axios.post(urlpostitem, data)
                         .then(function (res) {

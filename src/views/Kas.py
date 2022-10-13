@@ -36,7 +36,7 @@ def kaskecilMasuk(request):
             return redirect(reverse('core:kaskecil-masuk'))
         else:
             print("form tidak valid")
-    
+
     context = {"frm": frm, "kaskecilMasuk": kk_list, 'ts': total_saldo}
     return render(request, 'backend/kaskecil-in.html', context)
 
@@ -45,9 +45,11 @@ def kaskecilMasuk(request):
 def kaskecilKeluar(request):
     frm = KasKecilKeluarForm
     kk_list = KasKecil.objects.filter(created_by=request.user)
+
     if "q" in request.GET and request.GET["q"] != "":
         kk_list = KasKecil.objects.filter(
             created_by=request.user, no_kas=request.GET['q'])
+
     if request.POST:
         frm = KasKecilKeluarForm(request.POST)
         if frm.is_valid():
@@ -80,8 +82,8 @@ def edittemplatekkKeluar(request, pk):
     kkk_obj = kaskecilKeluar.object.get(pk=pk)
     kkk = KasKecilKeluarForm(request.POST, instance=kkk_obj)
     beban = Beban.objects.all()
-    html = render_to_string("backend/particial-modal/form-edit-kasbesar-keluar.html", {
-                            "frm": kkk, "trs": kkk_obj, "beban": beban})
+    html = render_to_string(
+        "backend/particial-modal/form-edit-kaskecil-keluar.html", {"frm": kkk, "trs": kkk_obj, "beban": beban})
     data = {'html': html}
     return JsonResponse(data)
 
@@ -113,6 +115,7 @@ def kaskecilDetailKeluar(request, pk):
     frm = KasKecilFormEdit(instance=tr_obj)
     frm2 = KasKecilDetailForm
     kar = Karyawan.objects.all()
+
     if request.POST:
         # print(request.POST["receiver_name"])
         print("berhasil masuk post")
@@ -146,9 +149,9 @@ def kaskecilDetailKeluar(request, pk):
 def edittemplateitemkk(request, pk):
     tr_obj = KasKecilDetail.objects.get(pk=pk)
     frm = KasKecilDetailForm(request.POST, instance=tr_obj)
-    # print(frm)
+    print(frm)
     html = render_to_string(
-        "backend/particial-modal/form-edit-item-kk.html", {"frm": frm, "trs": tr_obj})
+        "backend/particial-modal/form-edit-kaskecil-keluar.html", {"frm": frm, "trs": tr_obj})
     data = {'html': html}
     return JsonResponse(data)
 
@@ -159,6 +162,7 @@ def edititemkaskecil(request, pk):
     amount_item_f = tr_obj.amount
     kk = tr_obj.kk.pk
     tr2_obj = KasKecil.objects.get(pk=kk)
+    
     if request.POST:
         frm2 = KasKecilDetailForm(request.POST, instance=tr_obj)
 
@@ -260,7 +264,8 @@ def kasbesarKeluar(request):
             if frm2.is_valid():
                 add2frm = frm2.save(commit=False)
                 add2frm.id = pk
-                add2frm.total_kas = (float(addfrm.nominal) + float(add2frm.total_kas))
+                add2frm.total_kas = (
+                    float(addfrm.nominal) + float(add2frm.total_kas))
                 add2frm.save()
             addfrm.created_by = request.user
             # addfrm.nominal = 0
@@ -290,10 +295,12 @@ def edittemplatekbMasuk(request, pk):
 @login_required
 def edittemplatekbKeluar(request, pk):
     kbk_obj = KasBesarKeluar.objects.get(pk=pk)
+    pkt = "kas123"
+    t_list = TotalKasBesarKeluar.objects.all()
     kbk = KasBesarKeluarForm(request.POST, instance=kbk_obj)
     # print(frm)
     html = render_to_string(
-        "backend/particial-modal/form-edit-kasbesar-keluar.html", {"frm": kbk, "trs": kbk_obj})
+        "backend/particial-modal/form-edit-kasbesar-keluar.html", {"frm": kbk, "trs": kbk_obj, "totalKas": t_list})
     data = {'html': html}
     return JsonResponse(data)
 
@@ -301,19 +308,39 @@ def edittemplatekbKeluar(request, pk):
 @login_required
 def editkasbesarKeluar(request, pk):
     kasBK_obj = KasBesarKeluar.objects.get(pk=pk)
-    amount_item_f = kasBK_obj.nominal
+    nominal = kasBK_obj.nominal
+    totalSaldo = request.POST['total_kas']
+    pkt = "kas123"
+    frm = KasBesarKeluarForm(instance=kasBK_obj)
+    frm2 = TotalKasBesarKeluarForm
+    
     if request.POST:
-        FrmKbk = KasBesarKeluarForm(request.POST, instance=kasBK_obj)
+        frm = KasBesarKeluarForm(request.POST, instance=kasBK_obj)
+        frm2 = TotalKasBesarKeluarForm(request.POST)   
+        
+        if frm.is_valid():
+            addfrm = frm.save(commit=False)
 
-        if FrmKbk.is_valid():
-            FrmKbkadd = FrmKbk.save(commit=False)
-            # FrmKbkadd.nominal -= amount_item_f + float(FrmKbkadd.nominal)
-            FrmKbkadd.save()
-            messages.add_message(request, messages.INFO,
-                                 mark_safe('berhasil disimpan.'))
+            if nominal > addfrm.nominal:
+                selisih = (float(nominal) - float(addfrm.nominal))
+                total_saldo = (float(totalSaldo) - float(selisih)) 
+            elif nominal < addfrm.nominal:
+                selisih = (float(addfrm.nominal) - float(nominal))
+                total_saldo = (float(totalSaldo) + float(selisih))
+            else:
+                total_saldo = float(total_saldo)
+
+            if frm2.is_valid():
+                add2frm = frm2.save(commit=False)
+                add2frm.id = pkt
+                add2frm.total_kas = float(total_saldo)
+                add2frm.save()
+            # addfrm.nominal -= amount_item_f + float(addfrm.nominal)
+            addfrm.save()
+            messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
             return JsonResponse({'result': True})
-        print(FrmKbk.errors)
-        print(FrmKbk)
+        print(addfrm.errors)
+        print(addfrm)
         return JsonResponse({'result': False})
     return redirect(reverse('core:kasbesar-keluar'))
 
