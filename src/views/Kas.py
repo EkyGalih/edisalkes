@@ -166,12 +166,12 @@ def kaskecilDetailKeluar(request, pk):
                 frm2add = frm2.save(commit=False)
                 frm2add.kk = tr_obj
                 frm2add.amount = float(frm2add.quantity) * float(frm2add.unit_price)
-                frmadd.nominal += frm2add.amount
                 if frm3.is_valid():
                     frm3add = frm3.save(commit=False)
                     frm3add.id = pkt
-                    frm3add.total_kas = float(frm3add.total_kas) - float(frmadd.nominal)
+                    frm3add.total_kas = (float(frm3add.total_kas) - float(frm2add.amount))
                     frm3add.save()
+                frmadd.nominal += frm2add.amount
                 frm2add.save()
                 frmadd.save()
                 messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
@@ -193,9 +193,12 @@ def edittemplateitemkk(request, pk):
     tr_obj = KasKecilDetail.objects.get(pk=pk)
     frm = KasKecilDetailForm(request.POST, instance=tr_obj)
     beban = Beban.objects.all()
+    pkt = "kas123"
+    t_list = TotalKasBesarKeluar.objects.get(id=pkt)
+    totalSaldo = t_list.total_kas
     
     html = render_to_string(
-        "backend/particial-modal/form-edit-kaskecil-keluar.html", {"frm": frm, "trs": tr_obj, "beban": beban})
+        "backend/particial-modal/form-edit-kaskecil-keluar.html", {"frm": frm, "trs": tr_obj, "beban": beban, "totalKas": totalSaldo})
     data = {'html': html}
     return JsonResponse(data)
 
@@ -203,21 +206,48 @@ def edittemplateitemkk(request, pk):
 @login_required
 def edititemkaskecil(request, pk):
     tr_obj = KasKecilDetail.objects.get(pk=pk)
-    amount_item_f = tr_obj.amount
+    amount = tr_obj.amount
+    totalSaldo = request.POST['total_kas']
     kk = tr_obj.kk.pk
     tr2_obj = KasKecil.objects.get(pk=kk)
+    pkt = "kas123"
     
     if request.POST:
-        frm2 = KasKecilDetailForm(request.POST, instance=tr_obj)
-
-        if frm2.is_valid():
-            frm2add = frm2.save(commit=False)
-            frm2add.amount = float(frm2add.quantity) * float(frm2add.unit_price)
-            tr2_obj.nominal = (tr2_obj.nominal - amount_item_f) + float(frm2add.amount)
-            frm2add.save()
+        frm = KasKecilDetailForm(request.POST, instance=tr_obj)
+        frm2 = TotalKasBesarKeluarForm(request.POST)
+        
+        if frm.is_valid():
+            frmadd = frm.save(commit=False)
+            frmadd.amount = float(frmadd.quantity) * float(frmadd.unit_price)
+            tr2_obj.nominal = (tr2_obj.nominal - amount) + float(frmadd.amount)
+            print('amount old ', amount)
+            print('amountt new ', frmadd.amount)
+            if amount > frmadd.amount:
+                print('kurangi saldo')
+                selisih = (float(amount) - float(frmadd.amount))
+                total_saldo = (float(totalSaldo) - float(selisih))
+            elif amount < frmadd.amount:
+                print('tambah saldo')
+                selisih = (float(frmadd.amount) - float(amount))
+                total_saldo = (float(totalSaldo) + float(selisih))
+            else:
+                print('tidak ada hasil')
+                total_saldo = float(totalSaldo)
+            
+            print('selisih ', selisih)
+            print('total kas ', total_saldo)
+            
+            if frm2.is_valid():
+                frm2add = frm2.save(commit=False)               
+                frm2add.id = pkt
+                frm2add.total_kas = float(total_saldo)
+                frm2add.save()
+                
+            frmadd.save()
             tr2_obj.save()
             messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
             return JsonResponse({'result': True})
+        print(frm.errors)
         print(frm2.errors)
         return JsonResponse({'result': False})
     return redirect(reverse('core:kaskecil_detail_keluar', kwargs={'pk': kk}))
@@ -225,7 +255,8 @@ def edititemkaskecil(request, pk):
 
 @login_required
 def deleteKasKecil(request, pk):
-    kk = KasKecil.objects.get(pk=pk)
+    kk = KasBesarKeluar.objects.get(pk=pk)
+    
     if request.POST:
         try:
             kk.delete()
@@ -240,9 +271,21 @@ def deleteItemKasKecil(request, pk):
     item_kk = KasKecilDetail.objects.get(pk=pk)
     kk = KasKecil.objects.get(pk=item_kk.kk.pk)
     amount_item_f = item_kk.amount
+    pkt = "kas123"
+    t_list = TotalKasBesarKeluar.objects.get(id=pkt)
+    totalSaldo = t_list.total_kas
 
     # tambahkan hapus total dengan kurangi total sebelum dihapus
     if request.POST:
+        frm = TotalKasBesarKeluarForm(request.POST)
+        
+        if frm.is_valid():
+            frmadd = frm.save(commit=False)    
+            frmadd.id = pkt
+            frmadd.total_kas = float(totalSaldo) + float(amount_item_f)
+            frmadd.save()
+        print(amount_item_f)
+        print(frm.errors)
         try:
             kk.nominal -= amount_item_f
             kk.save()

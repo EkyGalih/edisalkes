@@ -342,6 +342,7 @@
                     document.getElementById('id_quantity_modal').value,
                     document.getElementById('id_unit_price_modal').value,
                     document.getElementById('id_amount_modal').value,
+                    document.getElementById('id_total_kas_modal').value,
 
                     ]
                 }
@@ -372,6 +373,7 @@
                         data.append('quantity',formValues[2]);
                         data.append('unit_price',formValues[3]);
                         data.append('amount',formValues[4]);
+                        data.append('total_kas',formValues[5]);
 
                         axios.post(urlpostitem, data)
                         .then(function (res) {
