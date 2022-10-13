@@ -3,5 +3,5 @@
 <textarea name="keterangan" id="id_keterangan_modal" class="swal2-input">{{trs.keterangan}}</textarea>
 <input name="nominal" value="{{trs.nominal|floatformat:0}}" placeholder="Harga Produk" id="id_nominal_modal" class="swal2-input">
 {%for t_kas in totalKas %}
-    <input class="swal2-input" id="id_total_kas_modal" name="total_kas" value="{{t_kas.total_kas|floatformat:0}}">
+    <input type="text" class="swal2-input" id="id_total_kas_modal" name="total_kas" value="{{t_kas.total_kas|floatformat:0}}">
 {%endfor%}

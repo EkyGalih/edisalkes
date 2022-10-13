@@ -20,24 +20,35 @@ def kaskecilMasuk(request):
     frm = KasKecilMasukForm
     kk_list = KasBesarKeluar.objects.filter(created_by=request.user)
     pk = "kas123"
-    total_saldo = TotalKasBesarKeluar.objects.filter(id=pk)
+    t_list = TotalKasBesarKeluar.objects.filter(id=pk)
+    
+    if t_list:
+        totalKas = t_list
+    else:
+        totalKas = []
 
     if "q" in request.GET and request.GET["q"] != "":
         kk_list = KasBesarKeluar.objects.filter(
             created_by=request.user, no_kas=request.GET['q'])
     if request.POST:
         frm = KasKecilMasukForm(request.POST)
+        frm2 = TotalKasBesarKeluarForm(request.POST)
+        
         if frm.is_valid():
             addfrm = frm.save(commit=False)
+            if frm2.is_valid():
+                add2frm = frm2.save(commit=False)
+                add2frm.id = pk
+                add2frm.total_kas = (float(addfrm.nominal) + float(add2frm.total_kas))
+                add2frm.save()
             addfrm.created_by = request.user
             addfrm.save()
-            messages.add_message(request, messages.INFO,
-                                 mark_safe('berhasil disimpan.'))
+            messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
             return redirect(reverse('core:kaskecil-masuk'))
         else:
             print("form tidak valid")
 
-    context = {"frm": frm, "kaskecilMasuk": kk_list, 'ts': total_saldo}
+    context = {"frm": frm, "kaskecilMasuk": kk_list, 'ts': totalKas}
     return render(request, 'backend/kaskecil-in.html', context)
 
 
@@ -57,8 +68,7 @@ def kaskecilKeluar(request):
             addfrm.created_by = request.user
             addfrm.nominal = 0
             addfrm.save()
-            messages.add_message(request, messages.INFO,
-                                 mark_safe('berhasil disimpan.'))
+            messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
             return redirect(reverse('core:kaskecil_detail_keluar', kwargs={'pk': addfrm.pk}))
         else:
             print("form tidak valid")
@@ -70,10 +80,11 @@ def kaskecilKeluar(request):
 @login_required
 def edittemplatekkMasuk(request, pk):
     kkm_obj = KasBesarMasuk.objects.get(pk=pk)
+    pkt = "kas123"
+    t_list = TotalKasBesarKeluar.objects.all()
     kkm = KasBesarKeluarForm(request.POST, instance=kkm_obj)
     # print(frm)
-    html = render_to_string(
-        "backend/particial-modal/form-edit-kaskecil-masuk.html", {"frm": kkm, "trs": kkm_obj})
+    html = render_to_string("backend/particial-modal/form-edit-kaskecil-masuk.html", {"frm": kkm, "trs": kkm_obj, "totalKas": t_list})
     data = {'html': html}
     return JsonResponse(data)
 
@@ -91,18 +102,35 @@ def edittemplatekkKeluar(request, pk):
 @login_required
 def editkaskecilMasuk(request, pk):
     kasBM_obj = KasBesarMasuk.objects.get(pk=pk)
-    amount_item_f = kasBM_obj.nominal
+    nominal = kasBM_obj.nominal
+    totalSaldo = request.POST['total_kas']
+    pkt = "kas123"
+    
     if request.POST:
-        FrmKbm = KasBesarMasukForm(request.POST, instance=kasBM_obj)
-
-        if FrmKbm.is_valid():
-            FrmKbmadd = FrmKbm.save(commit=False)
-            # FrmKbmadd.nominal -= amount_item_f + float(FrmKbmadd.nominal)
-            FrmKbmadd.save()
+        frm = KasBesarMasukForm(request.POST, instance=kasBM_obj)
+        frm2 = TotalKasBesarKeluarForm(request.POST)
+        
+        if frm.is_valid():
+            addfrm = frm.save(commit=False)
+            
+            if nominal > addfrm.nominal:
+                selisih = (float(nominal) - float(addfrm.nominal))
+                total_saldo = (float(totalSaldo) - float(selisih))
+            elif nominal < addfrm.nominal:
+                selisih = (float(addfrm.nominal) - float(nominal))
+                total_saldo = (float(totalSaldo) + float(selisih))
+            
+            if frm2.is_valid():
+                add2frm = frm.save(commit=False)
+                add2frm.id = pkt
+                add2frm.total_kas = float(total_saldo)
+                add2frm.save()
+            
+            addfrm.save()
             messages.add_message(request, messages.INFO,
                                  mark_safe('berhasil disimpan.'))
             return JsonResponse({'result': True})
-        print(FrmKbm.errors)
+        print(frm.errors)
         # print(FrmKbm)
         return JsonResponse({'result': False})
     return redirect(reverse('core:kasbesar-masuk'))
@@ -339,8 +367,7 @@ def editkasbesarKeluar(request, pk):
             addfrm.save()
             messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
             return JsonResponse({'result': True})
-        print(addfrm.errors)
-        print(addfrm)
+        
         return JsonResponse({'result': False})
     return redirect(reverse('core:kasbesar-keluar'))
 
