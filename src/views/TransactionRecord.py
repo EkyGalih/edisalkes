@@ -57,14 +57,14 @@ def purhases(request):
 
 @login_required
 def purchaseDetail(request, pk):
-    
+
     tr_obj = Purchases.objects.get(pk=pk)
     purchase_item = PurchaseDetail.objects.filter(ps=pk)
     frm = PurchaseFormEdit(instance=tr_obj)
     frm2 = PurchaseDetailForm
     kar = Karyawan.objects.all()
     vend = Vendor.objects.all()
-    
+
     if request.POST:
         # print(request.POST)
         # print(request.POST["receiver_name"])
@@ -267,11 +267,13 @@ def salesDetail(request, pk):
     frm2 = SalesDetailForm
     kar = Karyawan.objects.all()
     pel = Lembaga.objects.all()
+    
     if request.POST:
         # print(request.POST["receiver_name"])
         print("berhasil masuk post")
         frm = SalesFormEdit(request.POST, instance=tr_obj)
         frm2 = SalesDetailForm(request.POST)
+        
         if frm.is_valid():
             frmadd = frm.save(commit=False)
 
@@ -296,12 +298,10 @@ def salesDetail(request, pk):
             # print(frmadd.discount)
             # frmadd.total_amount = float(frmadd.total) + frmadd.tax
             frmadd.save()
-            messages.add_message(request, messages.INFO,
-                                 mark_safe('berhasil disimpan.'))
+            messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
             return redirect(reverse('core:sales'))
 
-        messages.add_message(request, messages.INFO, mark_safe(
-            'Harap melengkapi form Nama Petugas'))
+        messages.add_message(request, messages.INFO, mark_safe('Harap melengkapi form Nama Petugas'))
         return redirect(reverse('core:sales_detail', kwargs={'pk': pk}))
 
     context = {"trs": tr_obj, "frm2": frm2, "sale_item": sale_item, "frm": frm,

@@ -4,11 +4,12 @@ from src.models import *
 from django.forms.widgets import Select, SelectMultiple
 from django.forms import ModelChoiceField
 
+
 class SalesForm(forms.ModelForm):
 
     class Meta:
         model = Sales
-        fields = ('transaction_date','vendor_name','pic')
+        fields = ('transaction_date', 'vendor_name', 'pic')
 
     def __init__(self, *args, **kwargs):
         super(SalesForm, self).__init__(*args, **kwargs)
@@ -19,11 +20,13 @@ class SalesForm(forms.ModelForm):
         self.fields['vendor_name'].widget.attrs['class'] = "form-control"
         self.fields['pic'].widget.attrs['class'] = "form-control"
 
+
 class SalesFormEdit(forms.ModelForm):
 
     class Meta:
         model = Sales
-        fields = ('transaction_date','vendor_name','dp','receiver_name','discount', 'surat_pesanan_instansi')
+        fields = ('transaction_date', 'vendor_name', 'dp',
+                  'receiver_name', 'discount', 'surat_pesanan_instansi')
 
     def __init__(self, *args, **kwargs):
         super(SalesFormEdit, self).__init__(*args, **kwargs)
@@ -35,7 +38,8 @@ class SalesFormEdit(forms.ModelForm):
         self.fields['dp'].widget.attrs['class'] = "form-control"
         self.fields['receiver_name'].widget.attrs['class'] = "form-control"
         self.fields['surat_pesanan_instansi'].widget.attrs['class'] = "form-control"
-        
+
+
 class SalesFormEdit2(forms.ModelForm):
 
     class Meta:
@@ -46,29 +50,30 @@ class SalesFormEdit2(forms.ModelForm):
         super(SalesFormEdit2, self).__init__(*args, **kwargs)
         self.fields["vendor_name"].required = True
 
+
 class SelectWithOptionAttribute(Select):
 
-
-    def create_option(self, name, value, label, selected, index, 
-                    subindex=None, attrs=None):
+    def create_option(self, name, value, label, selected, index,
+                      subindex=None, attrs=None):
         # This allows using strings labels as usual
         if isinstance(label, dict):
             opt_attrs = label.copy()
             label = opt_attrs.pop('label')
-        else: 
+        else:
             opt_attrs = {}
-        option_dict = super().create_option(name, value, 
-            label, selected, index, subindex=subindex, attrs=attrs)
-        for key,val in opt_attrs.items():
+        option_dict = super().create_option(name, value,
+                                            label, selected, index, subindex=subindex, attrs=attrs)
+        for key, val in opt_attrs.items():
             option_dict['attrs'][key] = val
         return option_dict
 
+
 class HargaChoiceField(ModelChoiceField):
-# Use our custom widget:
+    # Use our custom widget:
     widget = SelectWithOptionAttribute
 
     def label_from_instance(self, obj):
-    # 'obj' will be an Ingredient
+        # 'obj' will be an Ingredient
         return {
             # the usual label:
             'label': super().label_from_instance(obj),
@@ -80,12 +85,13 @@ class SalesDetailForm(forms.ModelForm):
 
     class Meta:
         model = SaleDetail
-        fields = ("product_code","product_name","quantity","size","unit_price","status",)
+        fields = ("product_code", "product_name", "quantity",
+                  "size", "unit_price", "status",)
 
         field_classes = {
             'product_name': HargaChoiceField
         }
-        
+
     def __init__(self, *args, **kwargs):
         super(SalesDetailForm, self).__init__(*args, **kwargs)
         # self.fields["product_code"].required = True

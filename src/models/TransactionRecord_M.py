@@ -1,4 +1,5 @@
 from email.policy import default
+from enum import unique
 from tabnanny import verbose
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -182,6 +183,7 @@ class MasterStatus(models.Model):
 
 class Beban(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    kode_beban = models.CharField("Id Beban/Biaya", unique=True, max_length=255, default="")
     jenis_biaya = models.CharField('Jenis Biaya', max_length=255)
     unit_price = models.CharField('Unit Price', max_length=255)
 

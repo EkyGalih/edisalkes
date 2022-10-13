@@ -120,6 +120,7 @@
                             <td>{{item.quantity}}</td>
                             <td>{{item.unit_price}}</td>
                             <td>{{item.amount}}</td>
+                            <td></td>
                             <td>
                                 <a href="#" id="btnEdit" 
                                     data-id="{{item.pk}}"
@@ -144,7 +145,10 @@
                         <td>{{frm2.jenis_kebutuhan}}</td>
                         <td>{{frm2.quantity}}</td>
                         <td>{{frm2.unit_price}}</td>
-                        <td><input type="text" class="form-control" readonly></td>
+                        <td><input type="text" id="id_amount" class="form-control" readonly></td>
+                        {%for kas in totalKas%}
+                        <td><input type="hidden" name="total_kas" value={{kas.total_kas}}></td>
+                        {%endfor%}
                         <td>
                             <a id="save_kaskecil_item" href="#" class="btn btn-green">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
@@ -256,15 +260,36 @@
         });
 
         $('#save_kaskecil_item').on("click", function(){
-            alert("apakah anda yakin?");
-            $('#formKasKecil').submit();
+            if($('#id_id_kebutuhan').val() == ''){
+                Swal.fire('Harap mengisi form terlebih dahulu!', '', 'warning');
+                $('#id_id_kebutuhan').focus();
+            }else{
+                alert("apakah anda yakin?");
+                $('#formKasKecil').submit();
+                {% if messages %}
+
+                {% for message in messages %}
+                Swal.fire('Tersimpan!', '', '{{ message }}');
+                {% endfor %}
+                {% endif %}
+            }
+        });
+
+        $('#id_quantity').keyup(function(){
+            harga = parseFloat($('#id_unit_price').val());   
+            quantity = 0;
+            if($('#id_quantity').val()){
+
+                quantity = parseInt($('#id_quantity').val());
+            }
+            amount = harga * quantity;
+            $('#id_amount').val(amount);
         });
 
         $('#id_id_kebutuhan').change(function(){
             var beban = $(this);
-            jenis_biaya = beban.find(':selected').data('jbeban');
-            unit_price = beban.find(':selected').data('unit_price')
-            console.log(jenis_biaya);
+            jenis_biaya = beban.find(':selected').data('beban');
+            unit_price = beban.find(':selected').data('price')
             $('#id_jenis_kebutuhan').val(jenis_biaya);
             $('#id_unit_price').val(unit_price);
             quantity = 0;
@@ -273,7 +298,8 @@
             }
             amount = parseInt(unit_price) * parseInt(quantity);
             $('#id_amount').val(amount);
-            $('id_jenis_kebutuhan').prop('readOnly', true);
+            $('#id_jenis_kebutuhan').prop('readOnly', true);
+            $('#id_unit_price').prop('readOnly', true);
         });
 
         callme = function(){
@@ -311,10 +337,11 @@
                 confirmButtonText: 'Kirim',
                 preConfirm: () => {
                     return [
-                    document.getElementById('id_id_kebutuhan_modal').value,
+                    document.getElementById('id_kebutuhan_modal').value,
                     document.getElementById('id_jenis_kebutuhan_modal').value,
                     document.getElementById('id_quantity_modal').value,
                     document.getElementById('id_unit_price_modal').value,
+                    document.getElementById('id_amount_modal').value,
 
                     ]
                 }
@@ -344,6 +371,7 @@
                         data.append('jenis_kebutuhan',formValues[1]);
                         data.append('quantity',formValues[2]);
                         data.append('unit_price',formValues[3]);
+                        data.append('amount',formValues[4]);
 
                         axios.post(urlpostitem, data)
                         .then(function (res) {
