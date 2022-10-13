@@ -41,17 +41,6 @@ class Lembaga(models.Model):
         verbose_name_plural = 'Manajemen Lembaga/Instansi'
 
 
-class PIC(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    pic = models.CharField('pic', max_length=191)
-
-    def __str__(self):
-        return self.nama_pic
-
-    class Meta:
-        verbose_name_plural = 'PIC'
-
-
 class Karyawan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nama = models.CharField('Nama Karyawan', max_length=191)

@@ -150,9 +150,8 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label">Total Kas</label>
           {%for total in ts%}
-            <input type="text" class="form-control" name="total_kas" value="{{ total.total_kas|floatformat:0 }}">
+            <input type="hidden" class="form-control" name="total_kas" value="{{ total.total_kas|floatformat:0 }}">
           {%endfor%}
         </div>
         
