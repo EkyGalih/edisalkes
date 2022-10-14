@@ -225,11 +225,11 @@ def edititemkaskecil(request, pk):
             if amount > frmadd.amount:
                 print('kurangi saldo')
                 selisih = (float(amount) - float(frmadd.amount))
-                total_saldo = (float(totalSaldo) - float(selisih))
+                total_saldo = (float(totalSaldo) + float(selisih))
             elif amount < frmadd.amount:
                 print('tambah saldo')
                 selisih = (float(frmadd.amount) - float(amount))
-                total_saldo = (float(totalSaldo) + float(selisih))
+                total_saldo = (float(totalSaldo) - float(selisih))
             else:
                 print('tidak ada hasil')
                 total_saldo = float(totalSaldo)
