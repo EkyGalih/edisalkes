@@ -255,7 +255,7 @@ def edititemkaskecil(request, pk):
 
 @login_required
 def deleteKasKecil(request, pk):
-    kk = KasBesarKeluar.objects.get(pk=pk)
+    kk = KasKecil.objects.get(pk=pk)
     
     if request.POST:
         try:
