@@ -87,8 +87,11 @@ def purchaseDetail(request, pk):
                 if frmadd.ongkos_kirim:
                     ongkos_kirim = float(frmadd.ongkos_kirim)
                 frmadd.total_amount = float(frmadd.total) + ongkos_kirim + frmadd.tax
-                frmadd.dp = (float(frmadd.dp_persen)/100) * frmadd.total_amount
-                
+                dp_persen = 0
+                if frmadd.dp_persen:
+                    dp_persen = float(frmadd.dp_persen)
+                frmadd.dp = (float(dp_persen)/100) * frmadd.total_amount
+
                 frm2add.save()
                 frmadd.save()
                 messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
