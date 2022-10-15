@@ -374,15 +374,17 @@ def deleteItemSale(request, pk):
     item_sale = SaleDetail.objects.get(pk=pk)
     sale = Sales.objects.get(pk=item_sale.ss.pk)
     amount_item_f = item_sale.amount
+    getTax = MasterPersen.objects.get()
+    tax = getTax.angka
 
     # tambahkan hapus total dengan kurangi total sebelum dihapus DONE
     if request.POST:
         try:
             sale.total -= amount_item_f
-            sale.tax = 0.1 * sale.total
-            diskon = float(sale.discount)/100 * sale.total
+            sale.tax = (float(tax)/100) * sale.total
+            total = sale.total + sale.tax
+            diskon = float(sale.discount)/100 * total
             sale.total_amount = float(sale.total) - diskon + sale.tax
-            # print(sale.total)
             # sale.total_amount = (float(sale.total) + float(sale.tax))
             sale.save()
             item_sale.delete()
