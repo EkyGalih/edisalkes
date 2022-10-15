@@ -267,8 +267,6 @@ def salesDetail(request, pk):
         print("berhasil masuk post")
         frm = SalesFormEdit(request.POST, instance=tr_obj)
         frm2 = SalesDetailForm(request.POST)
-        getTax = MasterPersen.objects.get()
-        tax = getTax.angka
              
         if frm.is_valid():
             frmadd = frm.save(commit=False)
@@ -278,7 +276,7 @@ def salesDetail(request, pk):
                 frm2add.ss = tr_obj
                 frm2add.amount = float(frm2add.quantity) * float(frm2add.unit_price)
                 frmadd.total += frm2add.amount
-                frmadd.tax = (float(tax)/100) * float(frmadd.total)
+                frmadd.tax = (float(persen_pajak)/100) * float(frmadd.total)
                 total = frmadd.total + frmadd.tax
                 diskon = float(frmadd.discount)/100 * total
                 frmadd.total_amount = float(frmadd.total) - diskon + frmadd.tax
@@ -289,7 +287,7 @@ def salesDetail(request, pk):
                                      mark_safe('berhasil disimpan.'))
                 return redirect(reverse('core:sales_detail', kwargs={'pk': pk}))
             # frmadd.total += frm2add.amount
-            frmadd.tax = (float(tax)/100) * float(frmadd.total)
+            frmadd.tax = (float(persen_pajak)/100) * float(frmadd.total)
             diskon = float(frmadd.discount)/100 * frmadd.total
             #frmadd.total_amount = float(frmadd.total) - diskon + frmadd.tax
             # print(frmadd.discount)
@@ -374,14 +372,14 @@ def deleteItemSale(request, pk):
     item_sale = SaleDetail.objects.get(pk=pk)
     sale = Sales.objects.get(pk=item_sale.ss.pk)
     amount_item_f = item_sale.amount
-    getTax = MasterPersen.objects.get()
-    tax = getTax.angka
+    persen_pajak = MasterPersen.objects.get(pk=1).angka
+
 
     # tambahkan hapus total dengan kurangi total sebelum dihapus DONE
     if request.POST:
         try:
             sale.total -= amount_item_f
-            sale.tax = (float(tax)/100) * sale.total
+            sale.tax = (float(persen_pajak)/100) * sale.total
             total = sale.total + sale.tax
             diskon = float(sale.discount)/100 * total
             sale.total_amount = float(sale.total) - diskon + sale.tax
