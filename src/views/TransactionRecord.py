@@ -267,7 +267,9 @@ def salesDetail(request, pk):
         print("berhasil masuk post")
         frm = SalesFormEdit(request.POST, instance=tr_obj)
         frm2 = SalesDetailForm(request.POST)
-        
+        getTax = MasterPersen.objects.get()
+        tax = getTax.angka
+             
         if frm.is_valid():
             frmadd = frm.save(commit=False)
 
@@ -276,7 +278,7 @@ def salesDetail(request, pk):
                 frm2add.ss = tr_obj
                 frm2add.amount = float(frm2add.quantity) * float(frm2add.unit_price)
                 frmadd.total += frm2add.amount
-                frmadd.tax = 0.125 * float(frmadd.total)
+                frmadd.tax = (float(tax)/100) * float(frmadd.total)
                 total = frmadd.total + frmadd.tax
                 diskon = float(frmadd.discount)/100 * total
                 frmadd.total_amount = float(frmadd.total) - diskon + frmadd.tax
@@ -287,9 +289,9 @@ def salesDetail(request, pk):
                                      mark_safe('berhasil disimpan.'))
                 return redirect(reverse('core:sales_detail', kwargs={'pk': pk}))
             # frmadd.total += frm2add.amount
-            frmadd.tax = 0.125 * float(frmadd.total)
+            frmadd.tax = (float(tax)/100) * float(frmadd.total)
             diskon = float(frmadd.discount)/100 * frmadd.total
-            frmadd.total_amount = float(frmadd.total) - diskon + frmadd.tax
+            #frmadd.total_amount = float(frmadd.total) - diskon + frmadd.tax
             # print(frmadd.discount)
             # frmadd.total_amount = float(frmadd.total) + frmadd.tax
             frmadd.save()
@@ -380,6 +382,7 @@ def deleteItemSale(request, pk):
             sale.tax = 0.1 * sale.total
             diskon = float(sale.discount)/100 * sale.total
             sale.total_amount = float(sale.total) - diskon + sale.tax
+            # print(sale.total)
             # sale.total_amount = (float(sale.total) + float(sale.tax))
             sale.save()
             item_sale.delete()
