@@ -1,6 +1,7 @@
 {% extends 'backend/base_backend.html' %}
 {% load static %}
 {% load humanize %}
+{% block active_pembelian %} active {%endblock%}
 {% load main_tags %}
 {% block title_header %}
 
@@ -378,7 +379,6 @@
         $('#id_product_name').change(function(){
             var produk = $(this);
             harga = produk.find(':selected').data('price');
-            console.log(produk);
             $('#id_unit_price').val(harga);
             quantity = 0;
             if($('#id_quantity').val()){

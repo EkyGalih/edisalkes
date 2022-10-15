@@ -140,7 +140,7 @@ class Purchases(models.Model):
         if (self.dp_persen == None):
             self.dp_persen = 0
         self.tax = (float(self.tax_persen)/100 * float(self.total))
-        self.dp = (float(self.dp_persen)/100 * float(self.total))
+        self.dp = (float(self.dp_persen)/100 * float(self.total_amount))
         self.sisa_pembayaran = (float(self.total_amount) - float(self.dp))
         super(Purchases, self).save(*args, **kwargs)
 

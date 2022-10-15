@@ -23,6 +23,7 @@ def purhases(request):
     frm_ven = VendorForm
     purchase_list = Purchases.objects.filter(created_by=request.user)
     status_ven = 0
+    
     if "q" in request.GET and request.GET["q"] != "":
         purchase_list = Purchases.objects.filter(
             created_by=request.user, invoice_no=request.GET['q'])
@@ -71,6 +72,7 @@ def purchaseDetail(request, pk):
         # print("berhasil masuk post")
         frm = PurchaseFormEdit(request.POST, instance=tr_obj)
         frm2 = PurchaseDetailForm(request.POST)
+        
         if frm.is_valid():
             # print("oke berubah")
             frmadd = frm.save(commit=False)
@@ -78,45 +80,38 @@ def purchaseDetail(request, pk):
                 frm2add = frm2.save(commit=False)
                 frm2add.ps = tr_obj
                 frm2add.unit_price = request.POST['unit_price']
-                frm2add.amount = float(frm2add.quantity) * \
-                    float(frm2add.unit_price)
+                frm2add.amount = float(frm2add.quantity) * float(frm2add.unit_price)
                 frmadd.total += frm2add.amount
-                frmadd.tax = (float(frmadd.tax_persen)/100) * \
-                    float(frmadd.total)
+                frmadd.tax = (float(frmadd.tax_persen)/100) * float(frmadd.total)
                 ongkos_kirim = 0
                 if frmadd.ongkos_kirim:
                     ongkos_kirim = float(frmadd.ongkos_kirim)
-                frmadd.total_amount = float(
-                    frmadd.total) + ongkos_kirim + frmadd.tax
+                frmadd.total_amount = float(frmadd.total) + ongkos_kirim + frmadd.tax
+                frmadd.dp = (float(frmadd.dp_persen)/100) * frmadd.total_amount
+                
                 frm2add.save()
                 frmadd.save()
-                messages.add_message(request, messages.INFO,
-                                     mark_safe('berhasil disimpan.'))
+                messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
                 return redirect(reverse('core:purchases_detail', kwargs={'pk': pk}))
 
             nilai_total = float(frmadd.total)
             nilai_persen = (float(frmadd.tax_persen)/100)
-            dp_persen = (float(frmadd.dp)/100)
             frmadd.tax = (nilai_persen * nilai_total)
-            frmadd.dp = (dp_persen * nilai_total)
             ongkos_kirim = 0
             if frmadd.ongkos_kirim:
                 ongkos_kirim = float(frmadd.ongkos_kirim)
-            frmadd.total_amount = float(
-                frmadd.total) + ongkos_kirim + frmadd.tax
-            # frmadd.total_amount = float(frmadd.total) + frmadd.tax
+            frmadd.total_amount = float(nilai_total) + ongkos_kirim + frmadd.tax
+            frmadd.dp = (float(frmadd.dp_persen)/100) * frmadd.total_amount
+            
             frmadd.save()
-            messages.add_message(request, messages.INFO,
-                                 mark_safe('berhasil disimpan.'))
+            messages.add_message(request, messages.INFO, mark_safe('berhasil disimpan.'))
             return redirect(reverse('core:purchases'))
         print(frm.errors)
         print(frm2.errors)
-        messages.add_message(request, messages.INFO, mark_safe(
-            'Harap melengkapi form karyawan penerima'))
+        messages.add_message(request, messages.INFO, mark_safe('Harap melengkapi form karyawan penerima'))
         return redirect(reverse('core:purchases_detail', kwargs={'pk': pk}))
 
-    context = {"trs": tr_obj, "frm2": frm2,
-               "purchase_item": purchase_item, "frm": frm, "kar": kar, "vend": vend}
+    context = {"trs": tr_obj, "frm2": frm2, "purchase_item": purchase_item, "frm": frm, "kar": kar, "vend": vend}
     return render(request, "backend/detail-purchase.html", context)
 
 
@@ -135,24 +130,20 @@ def edittemplateitemps(request, pk):
 
 @login_required
 def edititempurchase(request, pk):
-    print(pk)
     tr_obj = PurchaseDetail.objects.get(pk=pk)
-    print(tr_obj.amount)
     amount_item_f = tr_obj.amount
     ps = tr_obj.ps.pk
     tr2_obj = Purchases.objects.get(pk=ps)
+
     if request.POST:
         frm2 = PurchaseDetailForm(request.POST, instance=tr_obj)
 
         if frm2.is_valid():
             frm2add = frm2.save(commit=False)
             frm2add.unit_price = request.POST['unit_price']
-            frm2add.amount = float(frm2add.quantity) * \
-                float(frm2add.unit_price)
-            tr2_obj.total = (tr2_obj.total - amount_item_f) + \
-                float(frm2add.amount)
-            tr2_obj.tax = (float(tr2_obj.tax_persen)/100) * \
-                float(tr2_obj.total)
+            frm2add.amount = float(frm2add.quantity) * float(frm2add.unit_price)
+            tr2_obj.total = (tr2_obj.total - amount_item_f) + float(frm2add.amount)
+            tr2_obj.tax = (float(tr2_obj.tax_persen)/100) * float(tr2_obj.total)
             ongkos_kirim = 0
             if tr2_obj.ongkos_kirim:
                 ongkos_kirim = float(tr2_obj.ongkos_kirim)
@@ -280,8 +271,7 @@ def salesDetail(request, pk):
             if frm2.is_valid():
                 frm2add = frm2.save(commit=False)
                 frm2add.ss = tr_obj
-                frm2add.amount = float(frm2add.quantity) * \
-                    float(frm2add.unit_price)
+                frm2add.amount = float(frm2add.quantity) * float(frm2add.unit_price)
                 frmadd.total += frm2add.amount
                 frmadd.tax = 0.125 * float(frmadd.total)
                 diskon = float(frmadd.discount)/100 * frmadd.total
