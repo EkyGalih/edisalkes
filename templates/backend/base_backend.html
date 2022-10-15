@@ -20,7 +20,7 @@
     <link href="{% static 'dist/css/tabler-payments.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'dist/css/tabler-vendors.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'dist/css/demo.min.css' %}" rel="stylesheet"/>
-	<style>
+	{% comment %} <style>
 		footer {
 			font-size: 9px;
 			color: #f00;
@@ -55,7 +55,7 @@
 			  height: 297mm;
 			}
 		  }
-	</style>
+	</style> {% endcomment %}
   </head>
   <body class="antialiased">
     <div class="wrapper">
@@ -65,11 +65,11 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <h1 class="navbar-brand navbar-brand-autodark">
+			<img src="{% static 'ptpha/img/logo@2x.png' %}" width="110" height="32" alt="Tabler" class="navbar-brand-image" style="margin-bottom: 10px;">
             <a href="{% url 'core:dashboard' %}">
-				<h1 id="title">PT PHA</h1>
-              <!-- <img src="{% static 'static/logo.svg' %}" width="110" height="32" alt="Tabler" class="navbar-brand-image"> -->
+				<h1 id="title">PT. PHA</h1>
             </a>
-          </h1>
+		</h1>
           <div class="navbar-nav flex-row d-lg-none">
             <div class="nav-item d-none d-md-flex me-3">
               <div class="btn-list">
@@ -412,12 +412,12 @@
 
 	</script>
     <script>
+
 		$(document).ready(function(){
 			$('#titlePrint').click(function(){
-				console.log('tess')
-				$('#title').text('tesss');
-			});
-		});
+				$('#title').text('PT. Putra Haryanda Alkesindo');
+			})
+		})
 
       // @formatter:off
       document.addEventListener("DOMContentLoaded", function () {

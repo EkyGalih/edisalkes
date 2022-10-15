@@ -225,7 +225,6 @@ class Sales(models.Model):
 
     def save(self, *args, **kwargs):
         if self._state.adding is True:
-            print(123321321)
             today = date.today()
             today_string = today.strftime('%y%m%d')
             next_invoice_number = '001'

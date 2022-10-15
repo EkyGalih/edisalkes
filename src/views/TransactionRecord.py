@@ -277,8 +277,10 @@ def salesDetail(request, pk):
                 frm2add.amount = float(frm2add.quantity) * float(frm2add.unit_price)
                 frmadd.total += frm2add.amount
                 frmadd.tax = 0.125 * float(frmadd.total)
-                diskon = float(frmadd.discount)/100 * frmadd.total
+                total = frmadd.total + frmadd.tax
+                diskon = float(frmadd.discount)/100 * total
                 frmadd.total_amount = float(frmadd.total) - diskon + frmadd.tax
+               
                 frm2add.save()
                 frmadd.save()
                 messages.add_message(request, messages.INFO,
